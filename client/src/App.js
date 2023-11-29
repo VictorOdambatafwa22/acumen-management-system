@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import NavBar from './Components/NavBar';
-import Apartment from './Components/Apartment';
+import UnitType from './Components/UnitType';
 import Footer from './Components/Footer';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <div>
     <NavBar />
 
-    <Apartment />
+    <UnitType />
     <Footer />
     {/* Add the rest of your content here */}
   </div>
