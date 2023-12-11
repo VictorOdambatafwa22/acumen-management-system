@@ -3,10 +3,9 @@ import '../App.css';
 
 function Apartment() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
+    apartmentName: '',
+    locationName: '',
+    ownerName: '',
   });
 
   const handleChange = (e) => {

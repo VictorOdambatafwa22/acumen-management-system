@@ -37,22 +37,22 @@ return (
           <a href="m">Setups</a>
           <ul className='lg:absolute bg-red-300 top-10 left-0  lg:hidden group-hover:block lg:w-56'>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Add new Owner</a>
+              <a href='owner'>Add new owner</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Add new Location</a>
+              <a href='location'>Add new location</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Add new Apartment</a>
+              <a href='apartment'>Add new apartment</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Add new Unit type</a>
+              <a href='unit-Type'>Add new unit type</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Add new Unit</a>
+              <a href='unit'>Add new unit</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Add new Tenant</a>
+              <a href='tenant'>Add new tenant</a>
             </li>
           </ul>
         </li>
@@ -72,12 +72,38 @@ return (
           </ul>
         </li>
 
+        <li className="hover:bg-red-300 mx-1 px-6 py-2 relative group">
+          <a href="m">Edit</a>
+          <ul className='lg:absolute bg-red-300 top-10 left-0  lg:hidden group-hover:block lg:w-56'>
+            <li className='my-1 hover:bg-red-400 px-6 py-2'>
+              <a href='m'>Edit owner</a>
+            </li>
+            <li className='my-1 hover:bg-red-400 px-6 py-2'>
+              <a href='m'>Edit location</a>
+            </li>
+            <li className='my-1 hover:bg-red-400 px-6 py-2'>
+              <a href='m'>Edit apartment</a>
+            </li>
+            <li className='my-1 hover:bg-red-400 px-6 py-2'>
+              <a href='m'>Edit unit type</a>
+            </li>
+            <li className='my-1 hover:bg-red-400 px-6 py-2'>
+              <a href='m'>Edit unit</a>
+            </li>
+            <li className='my-1 hover:bg-red-400 px-6 py-2'>
+              <a href='search-Edit-Delete-Tenant'>Edit tenant</a>
+             
+            </li>
+          </ul>
+        </li>
+
+
         <li className="hover:bg-red-300 mx-1 px-6 py-2">
-          <a href="/">Reports</a>
+          <a href="m">Reports</a>
         </li>
 
         <li className="hover:bg-red-300 mx-1 px-6 py-2">
-          <a href="/">Sign out</a>
+          <a href="login">Sign out</a>
         </li>
        
       </ul>
