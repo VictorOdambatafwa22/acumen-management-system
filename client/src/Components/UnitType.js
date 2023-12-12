@@ -3,7 +3,7 @@ import '../App.css';
 
 function UnitType() {
   const [formData, setFormData] = useState({
-    unitType: '',
+    unitTypeName: '',
 
   });
 
@@ -15,7 +15,23 @@ function UnitType() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    console.log('Form submitted:', formData);
+    fetch('http://127.0.0.1:5556/unittypes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers as needed
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the API
+        console.log('Success:', data);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -23,7 +39,7 @@ function UnitType() {
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Add new unit type</h2>
         <div className="mb-4">
-          <label htmlFor="unitType" className="block text-gray-600 text-sm font-medium mb-2">
+          <label htmlFor="unitTypeName" className="block text-gray-600 text-sm font-medium mb-2">
             Unit type
           </label>
           <input

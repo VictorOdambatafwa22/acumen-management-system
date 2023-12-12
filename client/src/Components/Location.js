@@ -15,8 +15,25 @@ function Location() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    console.log('Form submitted:', formData);
+    fetch('http://127.0.0.1:5556/locations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers as needed
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the API
+        console.log('Success:', data);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+      });
   };
+    
 
   return (
     <div className="container mx-auto mt-8">
@@ -28,8 +45,8 @@ function Location() {
           </label>
           <input
             type="text"
-            id="location"
-            name="location"
+            id="locationName"
+            name="locationName"
             value={formData.locationName}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
