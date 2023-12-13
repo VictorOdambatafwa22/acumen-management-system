@@ -3,6 +3,19 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
+         
+
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String)
+    email= db.Column(db.String)
+    contact= db.Column(db.Integer)
+    password= db.Column(db.String)
+
+    def __repr__(self):
+        return f'User {self.name}'
 
 
 class Owner(db.Model):
@@ -13,25 +26,11 @@ class Owner(db.Model):
     lastName= db.Column(db.String)
     email= db.Column(db.String)
     phoneNumber= db.Column(db.Integer)
+    apartments = db.relationship('Apartment', back_populates='owner')
 
     def __repr__(self):
 
-        return f'Owner(id={self.id}'
-         
-
-class User(db.Model):
-    __tablename__ = 'users'
-
-
-    id = db.Column(db.Integer, primary_key=True)
-    name= db.Column(db.String)
-    email= db.Column(db.String)
-    contact= db.Column(db.Integer)
-    password= db.Column(db.String)
-
-
-    def __repr__(self):
-        return f'User {self.name}'
+        return f'Owner(id={self.id})'
 
 
 class Location(db.Model):
@@ -39,11 +38,12 @@ class Location(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     locationName= db.Column(db.String)
-
+    apartments = db.relationship('Apartment', back_populates='location')
 
     def __repr__(self):
 
-        return f'Location(id={self.id}'
+        return f'Location(id={self.id})'
+
 
 
 class Apartment(db.Model):
@@ -53,11 +53,13 @@ class Apartment(db.Model):
     apartmentName= db.Column(db.String)
     location_id = db.Column(db.Integer(), db.ForeignKey('locations.id'))
     owner_id = db.Column(db.Integer(), db.ForeignKey('owners.id'))
-
+    location = db.relationship('Location', back_populates='apartments')
+    owner = db.relationship('Owner', back_populates='apartments')
+    units = db.relationship('Unit', back_populates='apartment')
 
     def __repr__(self):
 
-        return f'Apartment(id={self.id}'
+        return f'Apartment(id={self.id})'
 
 
 class UnitType(db.Model):
@@ -65,11 +67,11 @@ class UnitType(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     unitTypeName= db.Column(db.String)
-
+    units = db.relationship('Unit', back_populates='unittype')
 
     def __repr__(self):
 
-        return f'UnitType(id={self.id}'
+        return f'UnitType(id={self.id})'
 
 
 class Unit(db.Model):
@@ -79,13 +81,15 @@ class Unit(db.Model):
     unitName= db.Column(db.String)
     apartment_id = db.Column(db.Integer(), db.ForeignKey('apartments.id'))
     unitType_id = db.Column(db.Integer(), db.ForeignKey('unittypes.id'))
+    rentAmount= db.Column(db.Integer)
     unitStatus= db.Column(db.String)
-
+    apartment = db.relationship('Apartment', back_populates='units')
+    unittype = db.relationship('UnitType', back_populates='units')
+  
 
     def __repr__(self):
 
-        return f'Unit(id={self.id}'
-
+        return f'Unit(id={self.id})'
 
 
 class Tenant(db.Model):
@@ -96,10 +100,11 @@ class Tenant(db.Model):
     lastName= db.Column(db.String)
     email= db.Column(db.String)
     phoneNumber= db.Column(db.Integer)
+    
 
     def __repr__(self):
 
-        return f'Tenant(id={self.id}'
+        return f'Tenant(id={self.id})'
 
 
 
@@ -111,9 +116,6 @@ class AuditTrail(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
     timein= db.Column(db.DateTime, server_default=db.func.now())
     timeout = db.Column(db.DateTime, onupdate=db.func.now())
-  
-
-    users = db.relationship('User', backref='audittrails')
-
+   
     def __repr__(self):
         return f'AuditTrail {self.id}'        

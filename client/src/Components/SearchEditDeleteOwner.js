@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const SearchEditDeleteTenant = () => {
+const SearchEditDeleteOwner = () => {
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -95,4 +95,4 @@ const SearchEditDeleteTenant = () => {
   );
 };
 
-export default SearchEditDeleteTenant;
+export default SearchEditDeleteOwner;

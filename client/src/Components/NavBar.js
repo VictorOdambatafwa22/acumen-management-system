@@ -76,19 +76,19 @@ return (
           <a href="m">Edit</a>
           <ul className='lg:absolute bg-red-300 top-10 left-0  lg:hidden group-hover:block lg:w-56'>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Edit owner</a>
+              <a href='search-Edit-Delete-Owner'>Edit owner</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Edit location</a>
+              <a href='search-Edit-Delete-Location'>Edit location</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Edit apartment</a>
+              <a href='search-Edit-Delete-Apartment'>Edit apartment</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Edit unit type</a>
+              <a href='search-Edit-Delete-UnitType'>Edit unit type</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
-              <a href='m'>Edit unit</a>
+              <a href='search-Edit-Delete-Unit'>Edit unit</a>
             </li>
             <li className='my-1 hover:bg-red-400 px-6 py-2'>
               <a href='search-Edit-Delete-Tenant'>Edit tenant</a>

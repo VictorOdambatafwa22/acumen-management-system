@@ -119,7 +119,63 @@ def UnitTypes():
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/apartments", methods=["GET","POST"])
+def Apartments():
+    if request.method =="GET":
+        apartments = [{
+            "id":apartment.id,
+            "apartmentName":apartment.apartmentName,
+            "location_id":apartment.location_id,
+            "owner_id":apartment.owner_id,
+        } for apartment in Apartment.query.all()]
+        return make_response(jsonify({"Apartments": apartments}), 200)
 
+    elif request.method =="POST":        
+            data = request.get_json()
+            hp = Apartment(
+                apartmentName=data["apartmentName"],
+                location_id=data["location_id"], 
+                owner_id=data["owner_id"]
+            )
+            db.session.add(hp)
+            db.session.commit()    
+
+            return make_response(jsonify(response), 200 )
+    else: 
+            return make_response(jsonify({"error": "invalid details"}), 404 )   
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/units", methods=["GET","POST"])
+def Units():
+    if request.method =="GET":
+        units = [{
+            "id":unit.id,
+            "unitName":unit.unitName,
+            "apartment_id":unit.apartment_id,
+            "unitType_id":unit.unitType_id,
+            "rentAmount":unit.rentAmount,
+            "unitStatus":unit.unitStatus,
+        } for unit in Unit.query.all()]
+        return make_response(jsonify({"Units": units}), 200)
+
+    elif request.method =="POST":        
+            data = request.get_json()
+            hp = Unit(
+                unitName=data["unitName"],
+                apartment_id=data["apartment_id"], 
+                unitType_id=data["unitType_id"],
+                rentAmount=data["rentAmount"],
+                unitStatus=data["unitStatus"]
+            )
+            db.session.add(hp)
+            db.session.commit()    
+
+            return make_response(jsonify(response), 200 )
+    else: 
+            return make_response(jsonify({"error": "invalid details"}), 404 )   
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 # @app.route("/users/<int:id>",methods=["GET"])
 # def users_view(id):
 #     if request.method =="GET":
