@@ -103,14 +103,15 @@ function Unit() {
           </label>
           <select id="example-select" name="apartment_id"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
-            onChange={handleChange}>
-            <option disabled selected value></option>
+            onChange={handleChange} 
+            required
+          >
+            <option disabled selected value=""></option>    
             {apartments.map(item => (
               <option key={item.id} value={item.id}>
                 {item.apartmentName}
               </option>
             ))}
-            required
           </select>
         </div>
 
@@ -120,14 +121,15 @@ function Unit() {
           </label>
           <select id="example-select" name="unitType_id"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
-            onChange={handleChange}>
-            <option disabled selected value></option>
+            onChange={handleChange}
+            required
+            >
+              <option disabled selected value=""></option>   
             {unittypes.map(item => (
               <option key={item.id} value={item.id}>
                 {item.unitTypeName}
               </option>
             ))}
-            required
           </select>
         </div>
 

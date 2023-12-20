@@ -1,43 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom'
+import { OwnerContext } from './OwnerContext';
 
 const SearchEditDeleteOwner = () => {
-  const [students, setStudents] = useState([]);
+  // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const ownerContext =useContext(OwnerContext)
+console.log(ownerContext.owners)
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:5556/owners');
-        const result = await response.json();
-        setStudents(result.Owners);
-        console.log(result)
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('http://127.0.0.1:5556/locations');
+  //       const result = await response.json();
+  //       setStudents(result.Locations);
+  //       console.log(result)
+  //     } catch (error) {
+  //       setError(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  if (loading) {
+  if ( ownerContext.loading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
+  if ( ownerContext.error) {
+    return <p>Error: {ownerContext.error.message}</p>;
   }
 
 
+
   const handleDelete = (id) => {
-    setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
   };
 
-  const filteredStudents = students.filter((student) =>
-    student.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOwners = ownerContext.owners.filter((owner) =>
+    owner.firstName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -66,7 +71,7 @@ const SearchEditDeleteOwner = () => {
 
         <tbody>
 
-          {filteredStudents.map((item) => (
+          {filteredOwners.map((item) => (
             <tr key={item.id}>
 
               <td className="border px-4 py-2">{item.id}</td>
@@ -75,9 +80,14 @@ const SearchEditDeleteOwner = () => {
               <td className="border px-4 py-2">{item.email}</td>
               <td className="border px-4 py-2">{item.phoneNumber}</td>
               <td className="border px-4 py-2">
-                <button className="bg-blue-500 text-white px-2 py-1 mr-2">
+
+                <Link
+                  className="bg-blue-500 text-white px-2 py-1 mr-2"
+                  to={`/edit-owner/${item.id}`}
+                >
                   Edit
-                </button>
+                </Link>
+
                 <button
                   className="bg-red-500 text-white px-2 py-1"
                   onClick={() => handleDelete(item.id)}

@@ -101,14 +101,16 @@ function Apartment() {
           </label>
           <select id="example-select" name="location_id"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
-            onChange={handleChange}>
-            <option disabled selected value></option>
+            onChange={handleChange}
+            required
+            >
+            <option disabled selected value=""></option> 
             {students.map(item => (
               <option key={item.id} value={item.id}>
                 {item.locationName}
               </option>
             ))}
-            required
+            
           </select>
         </div>
 
@@ -118,14 +120,16 @@ function Apartment() {
           </label>
           <select id="example-select" name="owner_id"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
-            onChange={handleChange}>
-            <option disabled selected value></option>
+            onChange={handleChange}
+            required
+            >
+            <option disabled selected value=""></option> 
             {owners.map(item => (
               <option key={item.id} value={item.id}>
                 {item.firstName}
               </option>
             ))}
-            required
+            
           </select>
         </div>
 

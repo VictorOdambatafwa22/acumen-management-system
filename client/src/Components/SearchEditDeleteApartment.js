@@ -1,43 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom'
+import { ApartmentContext } from './ApartmentContext';
 
 const SearchEditDeleteApartment = () => {
-  const [students, setStudents] = useState([]);
+  // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const apartmentContext =useContext(ApartmentContext)
+console.log(apartmentContext.apartments)
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:5556/apartments');
-        const result = await response.json();
-        setStudents(result.Apartments);
-        console.log(result)
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('http://127.0.0.1:5556/locations');
+  //       const result = await response.json();
+  //       setStudents(result.Locations);
+  //       console.log(result)
+  //     } catch (error) {
+  //       setError(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  if (loading) {
+  if ( apartmentContext.loading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
+  if ( apartmentContext.error) {
+    return <p>Error: {apartmentContext.error.message}</p>;
   }
 
 
+
   const handleDelete = (id) => {
-    setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
   };
 
-  const filteredStudents = students.filter((student) =>
-    student.apartmentName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredApartments = apartmentContext.apartments.filter((apartment) =>
+    apartment.apartmentName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -65,7 +70,7 @@ const SearchEditDeleteApartment = () => {
 
         <tbody>
 
-          {filteredStudents.map((item) => (
+          {filteredApartments.map((item) => (
             <tr key={item.id}>
 
               <td className="border px-4 py-2">{item.id}</td>
@@ -73,9 +78,14 @@ const SearchEditDeleteApartment = () => {
               <td className="border px-4 py-2">{item.location_id}</td>
               <td className="border px-4 py-2">{item.owner_id}</td>
               <td className="border px-4 py-2">
-                <button className="bg-blue-500 text-white px-2 py-1 mr-2">
+
+              <Link
+                  className="bg-blue-500 text-white px-2 py-1 mr-2"
+                  to={`/edit-apartment/${item.id}`}
+                >
                   Edit
-                </button>
+                </Link>
+
                 <button
                   className="bg-red-500 text-white px-2 py-1"
                   onClick={() => handleDelete(item.id)}
