@@ -15,6 +15,13 @@ const LocationProvider = ({ children }) => {
    setLocations(newLocations)
   }
 
+  const handleDelete = (itemId) => {
+    // Implement the delete logic
+    const updatedData = locations.filter((item) => item.id !== itemId);
+    setLocations(updatedData);
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +41,7 @@ const LocationProvider = ({ children }) => {
 
 
   return (
-    <LocationContext.Provider value={{ locations,loading,error,UpdateLocation}}>
+    <LocationContext.Provider value={{ locations,loading,error,UpdateLocation,handleDelete}}>
       {children}
     </LocationContext.Provider>
   );

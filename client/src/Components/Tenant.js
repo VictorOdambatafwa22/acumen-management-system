@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import '../App.css';
+import { UnitContext } from './UnitContext';
 
 function Tenant() {
+  const { id } = useParams();
+  const unitContext = useContext(UnitContext)
+  const unit = unitContext.units.find(unit => unit.id === parseInt(id))
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phoneNumber: '',
+    unit_id: unit?.id,
   });
 
   const handleChange = (e) => {
@@ -14,11 +21,30 @@ function Tenant() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    console.log('Form submitted:', formData);
-  };
+
+    fetch('http://127.0.0.1:5556/tenants', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers as needed
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the API
+        console.log('Success:', data);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+      });
+
+    };
 
   return (
     <div className="container mx-auto mt-8">

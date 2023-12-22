@@ -15,6 +15,12 @@ const OwnerProvider = ({ children }) => {
   setOwners(newOwners)
   }
 
+  const handleDelete = (itemId) => {
+    // Implement the delete logic
+    const updatedData = owners.filter((item) => item.id !== itemId);
+    setOwners(updatedData);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +40,7 @@ const OwnerProvider = ({ children }) => {
 
 
   return (
-    <OwnerContext.Provider value={{ owners,loading,error,UpdateOwner}}>
+    <OwnerContext.Provider value={{ owners,loading,error,UpdateOwner,handleDelete}}>
       {children}
     </OwnerContext.Provider>
   );

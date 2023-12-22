@@ -51,9 +51,7 @@ const NavBar = () => {
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
                   <a href='/unit'>Add new unit</a>
                 </li>
-                <li className='my-1 hover:bg-red-400 px-6 py-2'>
-                  <a href='/tenant'>Add new tenant</a>
-                </li>
+    
               </ul>
             </li>
 
@@ -61,13 +59,13 @@ const NavBar = () => {
               <a href="m">Transactions</a>
               <ul className='lg:absolute bg-red-300 top-10 left-0  lg:hidden group-hover:block lg:w-56'>
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
-                  <a href='m'>Occupy unit</a>
+                  <a href='/occupy-Unit'>Occupy unit</a>
                 </li>
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
                   <a href='m'>Pay rent</a>
                 </li>
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
-                  <a href='m'>Vacate unit</a>
+                  <a href='/vacate-Unit'>Vacate unit</a>
                 </li>
               </ul>
             </li>

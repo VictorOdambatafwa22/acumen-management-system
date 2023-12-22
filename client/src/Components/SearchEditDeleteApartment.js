@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { ApartmentContext } from './ApartmentContext';
 
@@ -6,6 +6,7 @@ const SearchEditDeleteApartment = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const apartmentContext =useContext(ApartmentContext)
+  const { handleDelete } = useContext(ApartmentContext);
 console.log(apartmentContext.apartments)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -37,12 +38,16 @@ console.log(apartmentContext.apartments)
 
 
 
-  const handleDelete = (id) => {
-    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+  const onDeleteClick = (itemId) => {
+    // Call the handleDelete function from the context
+    handleDelete(itemId);
   };
 
   const filteredApartments = apartmentContext.apartments.filter((apartment) =>
-    apartment.apartmentName.toLowerCase().includes(searchTerm.toLowerCase())
+    apartment.apartmentName.toLowerCase().includes(searchTerm.toLowerCase())||
+    apartment.location_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    apartment.owner_id.toLowerCase().includes(searchTerm.toLowerCase())
+  
   );
 
   return (
@@ -88,7 +93,7 @@ console.log(apartmentContext.apartments)
 
                 <button
                   className="bg-red-500 text-white px-2 py-1"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => onDeleteClick(item.id)}
                 >
                   Delete
                 </button>

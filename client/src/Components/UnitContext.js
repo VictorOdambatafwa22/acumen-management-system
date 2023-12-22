@@ -15,6 +15,12 @@ const UnitProvider = ({ children }) => {
   setUnits(newUnits)
   }
 
+  const handleDelete = (itemId) => {
+    // Implement the delete logic
+    const updatedData = units.filter((item) => item.id !== itemId);
+    setUnits(updatedData);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +40,7 @@ const UnitProvider = ({ children }) => {
 
 
   return (
-    <UnitContext.Provider value={{ units,loading,error,UpdateUnit}}>
+    <UnitContext.Provider value={{ units,loading,error,UpdateUnit,handleDelete}}>
       {children}
     </UnitContext.Provider>
   );

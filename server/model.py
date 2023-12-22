@@ -85,6 +85,7 @@ class Unit(db.Model):
     unitStatus= db.Column(db.String)
     apartment = db.relationship('Apartment', back_populates='units')
     unittype = db.relationship('UnitType', back_populates='units')
+    tenant = db.relationship('Tenant', back_populates='units')
   
 
     def __repr__(self):
@@ -100,12 +101,12 @@ class Tenant(db.Model):
     lastName= db.Column(db.String)
     email= db.Column(db.String)
     phoneNumber= db.Column(db.Integer)
-    
+    unit_id = db.Column(db.Integer(), db.ForeignKey('units.id'))
+    units = db.relationship('Unit', back_populates='tenant')
 
     def __repr__(self):
 
         return f'Tenant(id={self.id})'
-
 
 
 

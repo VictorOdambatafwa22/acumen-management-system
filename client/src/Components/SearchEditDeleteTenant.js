@@ -1,43 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom'
+import { TenantContext } from './TenantContext';
 
 const SearchEditDeleteTenant = () => {
-  const [students, setStudents] = useState([]);
+  // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const tenantContext =useContext(TenantContext)
+  // const { handleDelete } = useContext(TenantContext);
+console.log(tenantContext.tenants)
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:5556/owners');
-        const result = await response.json();
-        setStudents(result.Owners);
-        console.log(result)
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('http://127.0.0.1:5556/locations');
+  //       const result = await response.json();
+  //       setStudents(result.Locations);
+  //       console.log(result)
+  //     } catch (error) {
+  //       setError(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  if (loading) {
+  if ( tenantContext.loading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
+  if ( tenantContext.error) {
+    return <p>Error: {tenantContext.error.message}</p>;
   }
 
 
-  const handleDelete = (id) => {
-    setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
-  };
 
-  const filteredStudents = students.filter((student) =>
-    student.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+  // const onDeleteClick = (itemId) => {
+  //   // Call the handleDelete function from the context
+  //   handleDelete(itemId);
+  // };
+
+  const filteredTenants = tenantContext.tenants.filter((tenant) =>
+  tenant.firstName.toLowerCase().includes(searchTerm.toLowerCase())||
+  tenant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  tenant.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -66,7 +75,7 @@ const SearchEditDeleteTenant = () => {
 
         <tbody>
 
-          {filteredStudents.map((item) => (
+          {filteredTenants.map((item) => (
             <tr key={item.id}>
 
               <td className="border px-4 py-2">{item.id}</td>
@@ -75,15 +84,20 @@ const SearchEditDeleteTenant = () => {
               <td className="border px-4 py-2">{item.email}</td>
               <td className="border px-4 py-2">{item.phoneNumber}</td>
               <td className="border px-4 py-2">
-                <button className="bg-blue-500 text-white px-2 py-1 mr-2">
+
+                <Link
+                  className="bg-blue-500 text-white px-2 py-1 mr-2"
+                  to={`/edit-Tenant/${item.id}`}
+                >
                   Edit
-                </button>
-                <button
+                </Link>
+
+                {/* <button
                   className="bg-red-500 text-white px-2 py-1"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => onDeleteClick(item.id)}
                 >
                   Delete
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}

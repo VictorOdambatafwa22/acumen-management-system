@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { UnitTypeContext } from './UnitTypeContext';
 
@@ -6,6 +6,7 @@ const SearchEditDeleteUnitType = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const unittypeContext =useContext(UnitTypeContext)
+  const { handleDelete } = useContext(UnitTypeContext);
 console.log(unittypeContext.locations)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -37,8 +38,9 @@ console.log(unittypeContext.locations)
 
 
 
-  const handleDelete = (id) => {
-    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+  const onDeleteClick = (itemId) => {
+    // Call the handleDelete function from the context
+    handleDelete(itemId);
   };
 
   const filteredUnitTypes = unittypeContext.unittypes.filter((unittype) =>
@@ -86,7 +88,7 @@ console.log(unittypeContext.locations)
 
                 <button
                   className="bg-red-500 text-white px-2 py-1"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => onDeleteClick(item.id)}
                 >
                   Delete
                 </button>

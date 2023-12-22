@@ -265,6 +265,102 @@ def update_unit(id):
         return make_response(jsonify({"error": "Unit not found"}), 404 )
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/tenants", methods=["GET","POST"])
+def Tenants():
+    if request.method =="GET":
+        tenants = [{
+            "id":tenant.id,
+            "firstName":tenant.firstName,
+            "lastName":tenant.lastName,
+            "email":tenant.email,
+            "phoneNumber":tenant.phoneNumber,
+            "unit_id":tenant.unit_id,
+
+        } for tenant in Tenant.query.all()]
+        return make_response(jsonify({"Tenants": tenants}), 200)
+
+    elif request.method =="POST":        
+            data = request.get_json()
+            hp = Tenant(
+                firstName=data["firstName"],
+                lastName=data["lastName"], 
+                email=data["email"],
+                phoneNumber=data["phoneNumber"],
+                unit_id=data["unit_id"]
+            )
+            db.session.add(hp)
+            db.session.commit()    
+# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm Updating unit when occupied by a tenant
+            unit = Unit.query.get(int(data["unit_id"]))
+            print(unit.unitStatus)
+            if unit:
+                unit.unitStatus = 'Occupied'
+            db.session.add(unit) 
+            db.session.commit()  
+
+            return make_response(jsonify(response), 200 )
+    else: 
+            return make_response(jsonify({"error": "invalid details"}), 404 )   
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/tenant/<int:id>",methods=["GET", "DELETE","PATCH"])
+def update_tenant(id):
+    if request.method =="GET":
+        tenant = Tenant.query.filter_by(id=id).first()
+        if tenant:
+         tenants = [{
+            "id":tenant.id,
+            "firstName":tenant.firstName,
+            "lastName":tenant.lastName,
+            "email":tenant.email,
+            "phoneNumber":tenant.phoneNumber,
+            "unit_id":tenant.unit_id,
+
+        } for tenant in Tenant.query.all()]
+        return make_response(jsonify({"Tenants": tenants}), 200)
+   
+    elif request.method =="PATCH":
+        tenant = Tenant.query.get(id) 
+        
+        if tenant:            
+            data = request.get_json()
+
+            if 'firstName' in data:
+                tenant.firstName = data['firstName']
+            if 'lastName' in data:
+                tenant.lastName = data['lastName']   
+            if 'email' in data:
+                tenant.email = data['email'] 
+            if 'phoneNumber' in data:
+                tenant.phoneNumber = data['phoneNumber']
+
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "Tenant updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Tenant not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        tenant = Tenant.query.filter_by(id=id).first() 
+
+        if tenant:
+            unit = Unit.query.filter_by(id=tenant.unit_id).first()
+            if unit:
+
+                unit.unitStatus = 'Vacant'
+                db.session.add(unit)
+
+            Tenant.query.filter_by(id=id).delete()
+            db.session.delete(tenant)
+            db.session.commit()
+
+            return make_response("Tenant successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Tenant not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # @app.route("/users/<int:id>",methods=["GET"])
 # def users_view(id):
 #     if request.method =="GET":

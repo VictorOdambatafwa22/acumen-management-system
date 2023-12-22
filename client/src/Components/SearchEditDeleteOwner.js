@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { OwnerContext } from './OwnerContext';
 
@@ -6,6 +6,7 @@ const SearchEditDeleteOwner = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const ownerContext =useContext(OwnerContext)
+  const { handleDelete } = useContext(OwnerContext);
 console.log(ownerContext.owners)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -37,12 +38,15 @@ console.log(ownerContext.owners)
 
 
 
-  const handleDelete = (id) => {
-    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+  const onDeleteClick = (itemId) => {
+    // Call the handleDelete function from the context
+    handleDelete(itemId);
   };
 
   const filteredOwners = ownerContext.owners.filter((owner) =>
-    owner.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+    owner.firstName.toLowerCase().includes(searchTerm.toLowerCase())||
+    owner.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    owner.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -90,7 +94,7 @@ console.log(ownerContext.owners)
 
                 <button
                   className="bg-red-500 text-white px-2 py-1"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => onDeleteClick(item.id)}
                 >
                   Delete
                 </button>

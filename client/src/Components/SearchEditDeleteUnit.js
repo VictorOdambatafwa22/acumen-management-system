@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { UnitContext } from './UnitContext';
 
@@ -6,6 +6,7 @@ const SearchEditDeleteUnit = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const unitContext =useContext(UnitContext)
+  const { handleDelete } = useContext(UnitContext);
 console.log(unitContext.units)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -37,12 +38,17 @@ console.log(unitContext.units)
 
 
 
-  const handleDelete = (id) => {
-    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+  const onDeleteClick = (itemId) => {
+    // Call the handleDelete function from the context
+    handleDelete(itemId);
   };
 
   const filteredUnits = unitContext.units.filter((unit) =>
-    unit.unitName.toLowerCase().includes(searchTerm.toLowerCase())
+    unit.unitName.toLowerCase().includes(searchTerm.toLowerCase())||
+    unit.unitType_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    unit.apartment_id.toLowerCase().includes(searchTerm.toLowerCase())||
+    unit.location_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    unit.unitStatus.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -60,11 +66,11 @@ console.log(unitContext.units)
           <tr>
             <th className="px-4 py-2">ID</th>
             <th className="px-4 py-2">Unit name</th>
-            <th className="px-4 py-2">Apartment</th>
             <th className="px-4 py-2">Unit type</th>
             <th className="px-4 py-2">Rent amount</th>
-            <th className="px-4 py-2">Status</th>
+            <th className="px-4 py-2">Apartment</th>
             <th className="px-4 py-2">Location</th>
+            <th className="px-4 py-2">Status</th>    
             <th className="px-4 py-2">Actions</th>
           </tr>
         </thead>
@@ -78,11 +84,11 @@ console.log(unitContext.units)
 
               <td className="border px-4 py-2">{item.id}</td>
               <td className="border px-4 py-2">{item.unitName}</td>
-              <td className="border px-4 py-2">{item.apartment_id}</td>
               <td className="border px-4 py-2">{item.unitType_id}</td>
               <td className="border px-4 py-2">{item.rentAmount}</td>
-              <td className="border px-4 py-2">{item.unitStatus}</td>
-              <td className="border px-4 py-2">{item.location_id}</td>
+              <td className="border px-4 py-2">{item.apartment_id}</td>
+              <td className="border px-4 py-2">{item.location_id}</td>          
+              <td className="border px-4 py-2">{item.unitStatus}</td>          
               <td className="border px-4 py-2">
 
               <Link
@@ -94,7 +100,7 @@ console.log(unitContext.units)
 
                 <button
                   className="bg-red-500 text-white px-2 py-1"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => onDeleteClick(item.id)}
                 >
                   Delete
                 </button>

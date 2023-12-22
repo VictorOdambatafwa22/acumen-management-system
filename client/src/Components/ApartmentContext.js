@@ -15,6 +15,12 @@ const ApartmentProvider = ({ children }) => {
   setApartments(newApartments)
   }
 
+  const handleDelete = (itemId) => {
+    // Implement the delete logic
+    const updatedData = apartments.filter((item) => item.id !== itemId);
+    setApartments(updatedData);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +40,7 @@ const ApartmentProvider = ({ children }) => {
 
 
   return (
-    <ApartmentContext.Provider value={{ apartments,loading,error,UpdateApartment}}>
+    <ApartmentContext.Provider value={{ apartments,loading,error,UpdateApartment,handleDelete}}>
       {children}
     </ApartmentContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { LocationContext } from './LocationContext';
 
@@ -6,6 +6,7 @@ const SearchEditDeleteLocation = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const locationContext =useContext(LocationContext)
+  const { handleDelete } = useContext(LocationContext);
 console.log(locationContext.locations)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -35,11 +36,11 @@ console.log(locationContext.locations)
     return <p>Error: {locationContext.error.message}</p>;
   }
 
-
-
-  const handleDelete = (id) => {
-    // setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+  const onDeleteClick = (itemId) => {
+    // Call the handleDelete function from the context
+    handleDelete(itemId);
   };
+
 
   const filteredLocations = locationContext.locations.filter((location) =>
     location.locationName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -84,10 +85,11 @@ console.log(locationContext.locations)
                   Edit
                 </Link>
 
-
+               
                 <button
                   className="bg-red-500 text-white px-2 py-1"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => onDeleteClick(item.id)}
+                
                 >
                   Delete
                 </button>
