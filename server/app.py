@@ -1,6 +1,6 @@
 from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
-from model import db, User, Owner, Location,Apartment,UnitType,Unit,Tenant,AuditTrail
+from model import db, User, Owner, Location,Apartment,UnitType,Unit,Tenant,AuditTrail,PaymentDay,Utility
 from flask_cors import CORS, cross_origin
 
 
@@ -184,6 +184,141 @@ def update_location(id):
             return make_response("Location successfully deleted", 204 )
         else:
             return make_response(jsonify({"error": "Location not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+@app.route("/utilities", methods=["GET","POST"])
+def Utilities():
+    if request.method =="GET":
+        utilities = [{
+            "id":utility.id,
+            "utilityName":utility.utilityName,
+            "costPerUnit":utility.costPerUnit,
+
+        } for utility in Utility.query.all()]
+        return make_response(jsonify({"Utilities": utilities}), 200)
+
+    elif request.method =="POST":        
+            data = request.get_json()
+            hp = Utility(
+                utilityName=data["utilityName"],
+                costPerUnit=data["costPerUnit"]
+
+            )
+            db.session.add(hp)
+            db.session.commit()    
+
+            return make_response(jsonify(response), 200 )
+    else: 
+            return make_response(jsonify({"error": "invalid details"}), 404 )   
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/utility/<int:id>",methods=["GET", "DELETE","PATCH"])
+def update_utility(id):
+    if request.method =="GET":
+        utility = Utility.query.filter_by(id=id).first()
+        if utility:
+         utilities = [{
+            "id":utility.id,
+            "utilityName":utility.utilityName,
+            "costPerUnit":utility.costPerUnit,
+
+        } for utility in Utility.query.all()]
+        return make_response(jsonify({"Utilities": utilities}), 200)
+   
+    elif request.method =="PATCH":
+        utility = Utility.query.get(id)
+        
+        if utility:            
+            data = request.get_json()
+
+            if 'utilityName' in data:
+                utility.utilityName = data['utilityName']
+
+            if 'costPerUnit' in data:
+                utility.costPerUnit = data['costPerUnit']
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "Utility updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Utility not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        utility = Utility.query.filter_by(id=id).first() 
+
+        if utility:
+            Utility.query.filter_by(id=id).delete()
+            db.session.delete(utility)
+            db.session.commit()
+
+            return make_response("Utility successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Utility not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+@app.route("/paymentdays", methods=["GET","POST"])
+def PaymentDays():
+    if request.method =="GET":
+        paymentdays = [{
+            "id":paymentday.id,
+            "rentDay":paymentday.rentDay,
+
+        } for paymentday in PaymentDay.query.all()]
+        return make_response(jsonify({"PaymentDays": paymentdays}), 200)
+
+    elif request.method =="POST":        
+            data = request.get_json()
+            hp = PaymentDay(
+                rentDay=data["rentDay"]
+            )
+            db.session.add(hp)
+            db.session.commit()    
+
+            return make_response(jsonify(response), 200 )
+    else: 
+            return make_response(jsonify({"error": "invalid details"}), 404 )   
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/paymentday/<int:id>",methods=["GET", "DELETE","PATCH"])
+def update_paymentday(id):
+    if request.method =="GET":
+        paymentday = PaymentDay.query.filter_by(id=id).first()
+        if paymentday:
+         paymentdays = [{
+            "id":paymentday.id,
+            "rentDay":paymentday.rentDay,
+
+        } for paymentday in PaymentDay.query.all()]
+        return make_response(jsonify({"PaymentDays": paymentdays}), 200)
+   
+    elif request.method =="PATCH":
+        paymentday = PaymentDay.query.get(id)
+        
+        if paymentday:            
+            data = request.get_json()
+
+            if 'rentDay' in data:
+                paymentday.rentDay = data['rentDay']
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "PaymentDay updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "PaymentDay not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        paymentday = Location.query.filter_by(id=id).first() 
+
+        if paymentday:
+            PaymentDay.query.filter_by(id=id).delete()
+            db.session.delete(paymentday)
+            db.session.commit()
+
+            return make_response("PaymentDay successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "PaymentDay not found"}), 404 )        
          
 
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm

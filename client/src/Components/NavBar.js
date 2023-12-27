@@ -51,7 +51,12 @@ const NavBar = () => {
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
                   <a href='/unit'>Add new unit</a>
                 </li>
-    
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/day'>Add rent payment day</a>
+                </li>
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/utility'>Add new utility</a>
+                </li>
               </ul>
             </li>
 
@@ -90,7 +95,12 @@ const NavBar = () => {
                 </li>
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
                   <a href='/search-Edit-Delete-Tenant'>Edit tenant</a>
-
+                </li>
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/search-Edit-Delete-Day'>Edit rent payment day</a>
+                </li>
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/search-Edit-Delete-Utility'>Edit utility</a>
                 </li>
               </ul>
             </li>

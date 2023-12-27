@@ -7,9 +7,17 @@ import { ApartmentProvider } from './Components/ApartmentContext';
 import { UnitTypeProvider } from './Components/UnitTypeContext';
 import { UnitProvider } from './Components/UnitContext';
 import { TenantProvider } from './Components/TenantContext';
+import { DayProvider } from './Components/DayContext';
+import { UtilityProvider } from './Components/UtilityContext';
 
 import SearchEditDeleteLocation from './Components/SearchEditDeleteLocation';//table component
 import EditLocation from './Components/EditLocation'; //form component
+
+import SearchEditDeleteDay from './Components/SearchEditDeleteDay';//table component
+import EditDay from './Components/EditDay'; //form component
+
+import SearchEditDeleteUtility from './Components/SearchEditDeleteUtility';//table component
+import EditUtility from './Components/EditUtility'; //form component
 
 import NavBar from './Components/NavBar';
 import SearchEditDeleteTenant from './Components/SearchEditDeleteTenant';
@@ -39,6 +47,8 @@ import SignUp from './Components/SignUp';
 import Unit from './Components/Unit';
 import UnitType from './Components/UnitType';
 import EditUnitType from './Components/EditUnitType'; //form component
+import PaymentDay from './Components/PaymentDay';
+import Utility from './Components/Utility';
 
 // import VacateUnit from './Components/VacateUnit';
 
@@ -54,6 +64,8 @@ const App = () => {
       <UnitTypeProvider>
       <UnitProvider>
       <TenantProvider>
+      <DayProvider>
+      <UtilityProvider> 
     <div>
      
 
@@ -70,6 +82,8 @@ const App = () => {
       <Route path='/apartment' element={<Apartment />} />
       <Route path='/unit-Type' element={<UnitType />} />
       <Route path='/unit' element={<Unit />} />
+      <Route path='/day' element={<PaymentDay />} />
+      <Route path='/utility' element={<Utility />} />
       <Route path='/tenant/:id' element={<Tenant />} />
       <Route path='/occupy-Unit' element={<OccupyUnit />} />
       <Route path='/vacate-Unit' element={<VacateUnit />} />
@@ -79,16 +93,23 @@ const App = () => {
       <Route path='/search-Edit-Delete-Apartment' element={<SearchEditDeleteApartment />} />
       <Route path='/search-Edit-Delete-UnitType' element={<SearchEditDeleteUnitType />} />
       <Route path='/search-Edit-Delete-Unit' element={<SearchEditDeleteUnit />} />
+      <Route path='/search-Edit-Delete-Day' element={<SearchEditDeleteDay />} />
+      <Route path='/search-Edit-Delete-Utility' element={<SearchEditDeleteUtility />} />
+
       <Route path='/edit-Location/:id' element={<EditLocation />} />
       <Route path='/edit-Owner/:id' element={<EditOwner />} />
       <Route path='/edit-Apartment/:id' element={<EditApartment />} />
       <Route path='/edit-UnitType/:id' element={<EditUnitType />} />
       <Route path='/edit-Unit/:id' element={<EditUnit />} />
       <Route path='/edit-Tenant/:id' element={<EditTenant />} />
+      <Route path='/edit-paymentday/:id' element={<EditDay />} />
+      <Route path='/edit-utility/:id' element={<EditUtility />} />
 
     </Routes>
     <Footer />
   </div>
+  </UtilityProvider>
+  </DayProvider>
   </TenantProvider>
   </UnitProvider>
   </UnitTypeProvider>

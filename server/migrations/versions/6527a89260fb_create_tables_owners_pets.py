@@ -1,8 +1,8 @@
 """Create tables owners, pets
 
-Revision ID: 9a0324bd3e02
+Revision ID: 6527a89260fb
 Revises: 
-Create Date: 2023-12-21 16:51:00.760867
+Create Date: 2023-12-27 17:30:36.226832
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9a0324bd3e02'
+revision = '6527a89260fb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,6 +31,11 @@ def upgrade():
     sa.Column('phoneNumber', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('paymentdays',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('rentDay', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('unittypes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('unitTypeName', sa.String(), nullable=True),
@@ -42,6 +47,12 @@ def upgrade():
     sa.Column('email', sa.String(), nullable=True),
     sa.Column('contact', sa.Integer(), nullable=True),
     sa.Column('password', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('utilities',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('utilityName', sa.String(), nullable=True),
+    sa.Column('costPerUnit', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('apartments',
@@ -91,8 +102,10 @@ def downgrade():
     op.drop_table('units')
     op.drop_table('audittrails')
     op.drop_table('apartments')
+    op.drop_table('utilities')
     op.drop_table('users')
     op.drop_table('unittypes')
+    op.drop_table('paymentdays')
     op.drop_table('owners')
     op.drop_table('locations')
     # ### end Alembic commands ###

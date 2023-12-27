@@ -17,6 +17,14 @@ class User(db.Model):
     def __repr__(self):
         return f'User {self.name}'
 
+class PaymentDay(db.Model):
+    __tablename__ = 'paymentdays'
+
+    id = db.Column(db.Integer, primary_key=True)
+    rentDay= db.Column(db.Integer)
+
+    def __repr__(self):
+        return f'User {self.id}'
 
 class Owner(db.Model):
     __tablename__ = 'owners'
@@ -44,6 +52,18 @@ class Location(db.Model):
 
         return f'Location(id={self.id})'
 
+
+class Utility(db.Model):
+    __tablename__ = 'utilities'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    utilityName= db.Column(db.String)
+    costPerUnit= db.Column(db.Integer)
+   
+
+    def __repr__(self):
+
+        return f'Utility(id={self.id})'
 
 
 class Apartment(db.Model):
@@ -103,6 +123,7 @@ class Tenant(db.Model):
     phoneNumber= db.Column(db.Integer)
     unit_id = db.Column(db.Integer(), db.ForeignKey('units.id'))
     units = db.relationship('Unit', back_populates='tenant')
+
 
     def __repr__(self):
 
