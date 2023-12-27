@@ -1,12 +1,12 @@
 
-from model import db, Unit
+from model import db, Apartment
 from app import app
 
 
 
 with app.app_context():
 
-    Unit.query.delete()
+    Apartment.query.delete()
     db.session.commit() 
   
 

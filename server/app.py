@@ -73,27 +73,57 @@ def Owners():
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-@app.route("/owner/<int:id>", methods=["PATCH"])
+@app.route("/owner/<int:id>",methods=["GET", "DELETE","PATCH"])
 def update_owner(id):
-    owner = Owner.query.get(id)
+    if request.method =="GET":
+        owner = Owner.query.filter_by(id=id).first()
+        if owner:
+         owners = [{
+            "id":owner.id,
+            "firstName":owner.firstName,
+            "lastName":owner.lastName,
+            "email":owner.email,
+            "phoneNumber":owner.phoneNumber,
 
-    if owner:
-        data = request.get_json()
-        if 'firstName' in data:
-            owner.firstName = data['firstName']
-        if 'lastName' in data:
-            owner.lastName = data['lastName']   
-        if 'email' in data:
-            owner.email = data['email'] 
-        if 'phoneNumber' in data:
-            owner.phoneNumber = data['phoneNumber']
+        } for owner in Owner.query.all()]
+        return make_response(jsonify({"Owners": owners}), 200)
+   
+    elif request.method =="PATCH":
+        owner = Owner.query.get(id)
+        
+        if owner:            
+            data = request.get_json()
 
-        db.session.commit()  
-        return make_response(jsonify({"message": "Owner updated successfully"}), 200)
-    else:
-        return make_response(jsonify({"error": "Owner not found"}), 404 )
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+            if 'firstName' in data:
+                owner.firstName = data['firstName']
+            if 'lastName' in data:
+                owner.lastName = data['lastName']   
+            if 'email' in data:
+                owner.email = data['email'] 
+            if 'phoneNumber' in data:
+                owner.phoneNumber = data['phoneNumber']
+
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "Owner updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Owner not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        owner = Owner.query.filter_by(id=id).first() 
+
+        if owner:
+            Owner.query.filter_by(id=id).delete()
+            db.session.delete(owner)
+            db.session.commit()
+
+            return make_response("Owner successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Owner not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/locations", methods=["GET","POST"])
 def Locations():
     if request.method =="GET":
@@ -247,25 +277,53 @@ def Apartments():
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-@app.route("/apartment/<int:id>", methods=["PATCH"])
+@app.route("/apartment/<int:id>",methods=["GET", "DELETE","PATCH"])
 def update_apartment(id):
-    apartment = Apartment.query.get(id)
+    if request.method =="GET":
+        apartment = Apartment.query.filter_by(id=id).first()
+        if apartment:
+         apartments = [{
+            "id":apartment.id,
+            "apartmentName":apartment.apartmentName,
+            "location_id":apartment.location_id,
+            "owner_id":apartment.owner_id,
 
-    if apartment:
-        data = request.get_json()
-        if 'apartmentName' in data:
-            apartment.apartmentName = data['apartmentName']
-        if 'location_id' in data:
-            apartment.location_id = data['location_id']   
-        if 'owner_id' in data:
-            apartment.owner_id = data['owner_id'] 
+        } for apartment in Apartment.query.all()]
+        return make_response(jsonify({"Apartments": apartments}), 200)
+   
+    elif request.method =="PATCH":
+        apartment = Apartment.query.get(id)
+        
+        if apartment:            
+            data = request.get_json()
 
-        db.session.commit()  
-        return make_response(jsonify({"message": "Apartment updated successfully"}), 200)
-    else:
-        return make_response(jsonify({"error": "Apartment not found"}), 404 )
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+            if 'apartmentName' in data:
+                apartment.apartmentName = data['apartmentName']
+            if 'location_id' in data:
+                apartment.location_id = data['location_id']   
+            if 'owner_id' in data:
+                apartment.owner_id = data['owner_id'] 
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "Apartment updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Apartment not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        apartment = Apartment.query.filter_by(id=id).first() 
+
+        if apartment:
+            apartment.query.filter_by(id=id).delete()
+            db.session.delete(apartment)
+            db.session.commit()
+
+            return make_response("Apartment successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Apartment not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/units", methods=["GET","POST"])
 def Units():
     if request.method =="GET":

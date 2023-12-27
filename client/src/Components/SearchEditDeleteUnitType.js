@@ -53,7 +53,7 @@ console.log(unittypeContext.locations)
         .then(response => response.json())
         .then(data => {
         
-        UnitTypeContext.handleDelete(data)
+          unittypeContext.handleDelete(data)
             // Handle the response from the API
             console.log('Success:', data);
         })
