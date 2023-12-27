@@ -154,21 +154,47 @@ def UnitTypes():
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-@app.route("/unittype/<int:id>", methods=["PATCH"])
+@app.route("/unittype/<int:id>",methods=["GET", "DELETE","PATCH"])
 def update_unittype(id):
-    unittype = UnitType.query.get(id)
+    if request.method =="GET":
+        unittype = UnitType.query.filter_by(id=id).first()
+        if unittype:
+         unittypes = [{
+            "id":unittype.id,
+            "unitTypeName":unittype.unitTypeName,
 
-    if unittype:
-        data = request.get_json()
-        if 'unitTypeName' in data:
-            unittype.unitTypeName = data['unitTypeName']
-        # if 'category' in data:
-        #     user_investor.category = data['category']        
-        db.session.commit()  
-        return make_response(jsonify({"message": "UnitType updated successfully"}), 200)
-    else:
-        return make_response(jsonify({"error": "UnitType not found"}), 404 )
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+        } for unittype in UnitType.query.all()]
+        return make_response(jsonify({"UnitTypes": unittypes}), 200)
+   
+    elif request.method =="PATCH":
+        unittype = UnitType.query.get(id)
+        
+        if unittype:            
+            data = request.get_json()
+
+            if 'unitTypeName' in data:
+                unittype.unitTypeName = data['unitTypeName']
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "UnitType updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "UnitType not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        unittype = UnitType.query.filter_by(id=id).first() 
+
+        if unittype:
+            UnitType.query.filter_by(id=id).delete()
+            db.session.delete(unittype)
+            db.session.commit()
+
+            return make_response("UnitType successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "UnitType not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/apartments", methods=["GET","POST"])
 def Apartments():
@@ -244,26 +270,58 @@ def Units():
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-@app.route("/unit/<int:id>", methods=["PATCH"])
+@app.route("/unit/<int:id>",methods=["GET", "DELETE","PATCH"])
 def update_unit(id):
-    unit = Unit.query.get(id)
+    if request.method =="GET":
+        unit = Unit.query.filter_by(id=id).first()
+        if unit:
+         units = [{
+            "id":unit.id,
+            "unitName":unit.unitName,
+            "apartment_id":unit.apartment_id,
+            "unitType_id":unit.unitType_id,
+            "rentAmount":unit.rentAmount,
 
-    if unit:
-        data = request.get_json()
-        if 'unitName' in data:
-            unit.unitName = data['unitName']
-        if 'apartment_id' in data:
-            unit.apartment_id = data['apartment_id']   
-        if 'unitType_id' in data:
-            unit.unitType_id = data['unitType_id'] 
-        if 'rentAmount' in data:
-            unit.rentAmount = data['rentAmount']
+        } for unit in Unit.query.all()]
+        return make_response(jsonify({"Units": units}), 200)
+   
+    elif request.method =="PATCH":
+        unit = Unit.query.get(id)
+        
+        if unit:            
+            data = request.get_json()
 
-        db.session.commit()  
-        return make_response(jsonify({"message": "Unit updated successfully"}), 200)
-    else:
-        return make_response(jsonify({"error": "Unit not found"}), 404 )
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+            if 'unitName' in data:
+                unit.unitName = data['unitName']
+            if 'apartment_id' in data:
+                unit.apartment_id = data['apartment_id']   
+            if 'unitType_id' in data:
+                unit.unitType_id = data['unitType_id'] 
+            if 'rentAmount' in data:
+                unit.rentAmount = data['rentAmount']
+
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "Unit updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Unit not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        unit = Unit.query.filter_by(id=id).first() 
+
+        if unit:
+            Unit.query.filter_by(id=id).delete()
+            db.session.delete(unit)
+            db.session.commit()
+
+            return make_response("Unit successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Unit not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/tenants", methods=["GET","POST"])
 def Tenants():
