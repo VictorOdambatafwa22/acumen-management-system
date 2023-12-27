@@ -6,7 +6,7 @@ const SearchEditDeleteLocation = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const locationContext =useContext(LocationContext)
-  const { handleDelete } = useContext(LocationContext);
+  // const { handleDelete } = useContext(LocationContext);
 console.log(locationContext.locations)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -37,9 +37,29 @@ console.log(locationContext.locations)
   }
 
   const onDeleteClick = (itemId) => {
-    // Call the handleDelete function from the context
-    handleDelete(itemId);
-  };
+
+    // Add your form submission logic here
+    fetch(`http://127.0.0.1:5556/location/${itemId}`, {
+       
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            // Add any other headers as needed
+        },
+        //  body: JSON.stringify(formData),
+    })
+        .then(response => response.json())
+        .then(data => {
+        
+        locationContext.handleDelete(data)
+            // Handle the response from the API
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+        });
+};
 
 
   const filteredLocations = locationContext.locations.filter((location) =>

@@ -6,7 +6,7 @@ const SearchEditDeleteUnit = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const unitContext =useContext(UnitContext)
-  const { handleDelete } = useContext(UnitContext);
+  // const { handleDelete } = useContext(UnitContext);
 console.log(unitContext.units)
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);

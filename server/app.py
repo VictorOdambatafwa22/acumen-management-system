@@ -116,21 +116,47 @@ def Locations():
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
-@app.route("/location/<int:id>", methods=["PATCH"])
+@app.route("/location/<int:id>",methods=["GET", "DELETE","PATCH"])
 def update_location(id):
-    location = Location.query.get(id)
+    if request.method =="GET":
+        location = Location.query.filter_by(id=id).first()
+        if location:
+         locations = [{
+            "id":location.id,
+            "locationName":location.locationName,
 
-    if location:
-        data = request.get_json()
-        if 'locationName' in data:
-            location.locationName = data['locationName']
-        # if 'category' in data:
-        #     user_investor.category = data['category']        
-        db.session.commit()  
-        return make_response(jsonify({"message": "Location updated successfully"}), 200)
-    else:
-        return make_response(jsonify({"error": "Location not found"}), 404 )
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+        } for location in Location.query.all()]
+        return make_response(jsonify({"Locations": locations}), 200)
+   
+    elif request.method =="PATCH":
+        location = Location.query.get(id)
+        
+        if location:            
+            data = request.get_json()
+
+            if 'locationName' in data:
+                location.locationName = data['locationName']
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "Location updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Location not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        location = Location.query.filter_by(id=id).first() 
+
+        if location:
+            Location.query.filter_by(id=id).delete()
+            db.session.delete(location)
+            db.session.commit()
+
+            return make_response("Location successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Location not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/unittypes", methods=["GET","POST"])
 def UnitTypes():
