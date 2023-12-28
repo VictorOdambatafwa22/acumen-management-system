@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
+from datetime import datetime
 from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
@@ -39,6 +40,25 @@ class Owner(db.Model):
     def __repr__(self):
 
         return f'Owner(id={self.id})'
+
+
+class PayRent(db.Model):
+    __tablename__ = 'payrents'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    tenant_id = db.Column(db.Integer(), db.ForeignKey('tenants.id'))
+    totalDue= db.Column(db.Integer)
+    amountPaid= db.Column(db.Integer)
+    balance= db.Column(db.Integer)
+    mpesaCode= db.Column(db.String)
+    entryDate = db.Column(db.DateTime, default=datetime.utcnow)
+  
+
+
+    def __repr__(self):
+
+        return f'PayRent(id={self.id})'
+
 
 
 class Location(db.Model):
@@ -121,9 +141,10 @@ class Tenant(db.Model):
     lastName= db.Column(db.String)
     email= db.Column(db.String)
     phoneNumber= db.Column(db.Integer)
+    arrears= db.Column(db.Integer)
     unit_id = db.Column(db.Integer(), db.ForeignKey('units.id'))
     units = db.relationship('Unit', back_populates='tenant')
-
+  
 
     def __repr__(self):
 

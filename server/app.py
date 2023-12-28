@@ -1,6 +1,6 @@
 from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
-from model import db, User, Owner, Location,Apartment,UnitType,Unit,Tenant,AuditTrail,PaymentDay,Utility
+from model import db, User, Owner, Location,Apartment,UnitType,Unit,Tenant,AuditTrail,PaymentDay,Utility,PayRent
 from flask_cors import CORS, cross_origin
 
 
@@ -552,6 +552,7 @@ def Tenants():
             "email":tenant.email,
             "phoneNumber":tenant.phoneNumber,
             "unit_id":tenant.unit_id,
+            "arrears":tenant.arrears,
 
         } for tenant in Tenant.query.all()]
         return make_response(jsonify({"Tenants": tenants}), 200)
@@ -563,10 +564,11 @@ def Tenants():
                 lastName=data["lastName"], 
                 email=data["email"],
                 phoneNumber=data["phoneNumber"],
-                unit_id=data["unit_id"]
+                unit_id=data["unit_id"],
+                arrears=data["arrears"]
             )
             db.session.add(hp)
-            db.session.commit()    
+            db.session.commit()  
 # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm Updating unit when occupied by a tenant
             unit = Unit.query.get(int(data["unit_id"]))
             print(unit.unitStatus)
@@ -592,6 +594,7 @@ def update_tenant(id):
             "email":tenant.email,
             "phoneNumber":tenant.phoneNumber,
             "unit_id":tenant.unit_id,
+            "arrears":tenant.arrears,
 
         } for tenant in Tenant.query.all()]
         return make_response(jsonify({"Tenants": tenants}), 200)
@@ -610,7 +613,8 @@ def update_tenant(id):
                 tenant.email = data['email'] 
             if 'phoneNumber' in data:
                 tenant.phoneNumber = data['phoneNumber']
-
+            if 'arrears' in data:
+                tenant.arrears = data['arrears']
 
             db.session.commit()  
             return make_response(jsonify({"message": "Tenant updated successfully"}), 200)

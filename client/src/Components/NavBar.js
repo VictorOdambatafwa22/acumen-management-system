@@ -97,6 +97,9 @@ const NavBar = () => {
                   <a href='/search-Edit-Delete-Tenant'>Edit tenant</a>
                 </li>
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/search-Edit-Delete-Rent'>Edit rent</a>
+                </li>
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
                   <a href='/search-Edit-Delete-Day'>Edit rent payment day</a>
                 </li>
                 <li className='my-1 hover:bg-red-400 px-6 py-2'>

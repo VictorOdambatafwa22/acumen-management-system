@@ -14,6 +14,7 @@ function Tenant() {
     email: '',
     phoneNumber: '',
     unit_id: unit?.id,
+    arrears:0,
   });
 
   const handleChange = (e) => {

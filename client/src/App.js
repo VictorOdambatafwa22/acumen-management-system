@@ -23,6 +23,9 @@ import NavBar from './Components/NavBar';
 import SearchEditDeleteTenant from './Components/SearchEditDeleteTenant';
 import EditTenant from './Components/EditTenant'; //form component
 
+import SearchEditDeleteRent from './Components/SearchEditDeleteRent';
+import EditRent from './Components/EditRent'; //form component
+
 import SearchEditDeleteOwner from './Components/SearchEditDeleteOwner';
 import EditOwner from './Components/EditOwner'; //form component
 
@@ -88,6 +91,7 @@ const App = () => {
       <Route path='/occupy-Unit' element={<OccupyUnit />} />
       <Route path='/vacate-Unit' element={<VacateUnit />} />
       <Route path='/search-Edit-Delete-Tenant' element={<SearchEditDeleteTenant />} />
+      <Route path='/search-Edit-Delete-Rent' element={<SearchEditDeleteRent />} />
       <Route path='/search-Edit-Delete-Owner' element={<SearchEditDeleteOwner />} />
       <Route path='/search-Edit-Delete-Location' element={<SearchEditDeleteLocation />} />
       <Route path='/search-Edit-Delete-Apartment' element={<SearchEditDeleteApartment />} />
@@ -102,6 +106,7 @@ const App = () => {
       <Route path='/edit-UnitType/:id' element={<EditUnitType />} />
       <Route path='/edit-Unit/:id' element={<EditUnit />} />
       <Route path='/edit-Tenant/:id' element={<EditTenant />} />
+      <Route path='/edit-Rent/:id' element={<EditRent />} /> 
       <Route path='/edit-paymentday/:id' element={<EditDay />} />
       <Route path='/edit-utility/:id' element={<EditUtility />} />
 
