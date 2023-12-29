@@ -100,7 +100,7 @@ function EditRent() {
             </div>
             <div className="mb-4">
               <label htmlFor="arrears" className="block text-gray-600 text-sm font-medium mb-2">
-                Email
+                Arrears
               </label>
               <input
                 type="arrears"

@@ -9,6 +9,7 @@ import { UnitProvider } from './Components/UnitContext';
 import { TenantProvider } from './Components/TenantContext';
 import { DayProvider } from './Components/DayContext';
 import { UtilityProvider } from './Components/UtilityContext';
+import { PayRentProvider } from './Components/PayRentContext';
 
 import SearchEditDeleteLocation from './Components/SearchEditDeleteLocation';//table component
 import EditLocation from './Components/EditLocation'; //form component
@@ -25,6 +26,11 @@ import EditTenant from './Components/EditTenant'; //form component
 
 import SearchEditDeleteRent from './Components/SearchEditDeleteRent';
 import EditRent from './Components/EditRent'; //form component
+
+import SearchEditDeleteRenting from './Components/SearchEditDeleteRenting';
+import PayRent from './Components/PayRent'; //form component
+import CancelRent from './Components/CancelRent'; //form component
+import AdjustMonthlyRent from './Components/AdjustMonthlyRent'; //form component
 
 import SearchEditDeleteOwner from './Components/SearchEditDeleteOwner';
 import EditOwner from './Components/EditOwner'; //form component
@@ -69,6 +75,7 @@ const App = () => {
       <TenantProvider>
       <DayProvider>
       <UtilityProvider> 
+      <PayRentProvider> 
     <div>
      
 
@@ -92,6 +99,7 @@ const App = () => {
       <Route path='/vacate-Unit' element={<VacateUnit />} />
       <Route path='/search-Edit-Delete-Tenant' element={<SearchEditDeleteTenant />} />
       <Route path='/search-Edit-Delete-Rent' element={<SearchEditDeleteRent />} />
+      <Route path='/search-Edit-Delete-Renting' element={<SearchEditDeleteRenting />} /> 
       <Route path='/search-Edit-Delete-Owner' element={<SearchEditDeleteOwner />} />
       <Route path='/search-Edit-Delete-Location' element={<SearchEditDeleteLocation />} />
       <Route path='/search-Edit-Delete-Apartment' element={<SearchEditDeleteApartment />} />
@@ -99,6 +107,8 @@ const App = () => {
       <Route path='/search-Edit-Delete-Unit' element={<SearchEditDeleteUnit />} />
       <Route path='/search-Edit-Delete-Day' element={<SearchEditDeleteDay />} />
       <Route path='/search-Edit-Delete-Utility' element={<SearchEditDeleteUtility />} />
+      <Route path='/edit-Cancel-Rent' element={<CancelRent />} /> 
+      <Route path='/adjust-Monthly-Rent' element={<AdjustMonthlyRent />} /> 
 
       <Route path='/edit-Location/:id' element={<EditLocation />} />
       <Route path='/edit-Owner/:id' element={<EditOwner />} />
@@ -107,12 +117,14 @@ const App = () => {
       <Route path='/edit-Unit/:id' element={<EditUnit />} />
       <Route path='/edit-Tenant/:id' element={<EditTenant />} />
       <Route path='/edit-Rent/:id' element={<EditRent />} /> 
+      <Route path='/edit-Renting/:id' element={<PayRent />} /> 
       <Route path='/edit-paymentday/:id' element={<EditDay />} />
       <Route path='/edit-utility/:id' element={<EditUtility />} />
 
     </Routes>
     <Footer />
   </div>
+  </PayRentProvider>
   </UtilityProvider>
   </DayProvider>
   </TenantProvider>

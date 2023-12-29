@@ -69,9 +69,9 @@ def Owners():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Owner added successfully"}), 200)
     else: 
-            return make_response(jsonify({"error": "invalid details"}), 404 )   
+            return make_response(jsonify({"error": "invalid details"}), 404 )    
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/owner/<int:id>",methods=["GET", "DELETE","PATCH"])
 def update_owner(id):
@@ -142,7 +142,7 @@ def Locations():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Location added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -209,7 +209,7 @@ def Utilities():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Utility added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -277,7 +277,7 @@ def PaymentDays():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Payment day added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -341,7 +341,7 @@ def UnitTypes():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Unit type added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -408,7 +408,7 @@ def Apartments():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Apartment added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -485,7 +485,7 @@ def Units():
             db.session.add(hp)
             db.session.commit()    
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Unit added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -577,7 +577,7 @@ def Tenants():
             db.session.add(unit) 
             db.session.commit()  
 
-            return make_response(jsonify(response), 200 )
+            return make_response(jsonify({"message": "Tenant added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
@@ -637,6 +637,104 @@ def update_tenant(id):
             db.session.commit()
 
             return make_response("Tenant successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "Tenant not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/payrents", methods=["GET","POST","PATCH"])
+def PayRents():
+    if request.method =="GET":
+        payrents = [{
+            "id":payrent.id,
+            "tenant_id":payrent.tenant_id,
+            "totalDue":payrent.totalDue,
+            "amountPaid":payrent.amountPaid,
+            "balance":payrent.balance,
+            "mpesaCode":payrent.mpesaCode,
+            "entryDate":payrent.entryDate,
+
+        } for payrent in PayRent.query.all()]
+        return make_response(jsonify({"PayRents": payrents}), 200)
+
+    elif request.method =="POST":        
+            data = request.get_json()
+            hp = PayRent(
+                tenant_id=data["tenant_id"],
+                totalDue=data["totalDue"], 
+                amountPaid=data["amountPaid"],
+                balance=data["balance"],
+                mpesaCode=data["mpesaCode"]
+                #entryDate=data["entryDate"]
+            )
+            db.session.add(hp)
+            db.session.commit()  
+# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm Updating arrears when rent is paid
+            tenant = Tenant.query.get(int(data["tenant_id"]))
+            print(tenant.arrears)
+            if tenant:
+                tenant.arrears = int(tenant.arrears) - int(data["amountPaid"])
+            db.session.add(tenant) 
+            db.session.commit()  
+# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm PATCH used to adjust monthly rents
+
+    elif request.method =="PATCH":
+
+       # Get all tenants
+        tenants = Tenant.query.all()
+
+        # Iterate through each tenant
+        for tenant in tenants:
+            print(tenant.arrears)
+            tenant.arrears = int(tenant.arrears) + int(tenant.units.rentAmount)
+            db.session.add(tenant)
+
+# Commit the changes after updating all tenants
+        db.session.commit()
+
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+        return make_response(jsonify({"message": "Tenant updated successfully"}), 200)
+    else: 
+        return make_response(jsonify({"error": "invalid details"}), 404 )   
+
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/payrent/<int:id>",methods=["GET", "DELETE"])
+def update_payrent(id):
+    if request.method =="GET":
+        payrent = PayRent.query.filter_by(id=id).first()
+        if payrent:
+         payrents = [{
+            "id":payrent.id,
+            "tenant_id":payrent.tenant_id,
+            "totalDue":payrent.totalDue,
+            "amountPaid":payrent.amountPaid,
+            "balance":payrent.balance,
+            "mpesaCode":payrent.mpesaCode,
+            "entryDate":payrent.entryDate,
+
+        } for payrent in PayRent.query.all()]
+        return make_response(jsonify({"PayRents": payrents}), 200)
+   
+
+    elif request.method =="DELETE":
+        payrent = PayRent.query.filter_by(id=id).first() 
+
+        if payrent:
+            tenant = Tenant.query.filter_by(id=payrent.tenant_id).first()
+            if tenant:
+
+                # tenant.arrears = tenant.arrears+payrent.amountPaid
+                tenant.arrears = int(tenant.arrears) + int(payrent.amountPaid)
+
+                db.session.add(tenant)
+
+            PayRent.query.filter_by(id=id).delete()
+            db.session.delete(payrent)
+            db.session.commit()
+
+            return make_response(jsonify({"message": "Transaction cancelled successfully"}), 200)
         else:
             return make_response(jsonify({"error": "Tenant not found"}), 404 )        
          

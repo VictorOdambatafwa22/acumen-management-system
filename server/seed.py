@@ -1,12 +1,12 @@
 
-from model import db, PaymentDay
+from model import db, PayRent
 from app import app
 
 
 
 with app.app_context():
 
-    PaymentDay.query.delete()
+    PayRent.query.delete()
     db.session.commit() 
   
 
