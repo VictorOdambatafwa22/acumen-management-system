@@ -21,6 +21,7 @@ function EditUnit() {
         rentAmount: '',
 
     });
+    const [successMessage, setSuccessMessage] = useState(null);
 
    function findUnit(){
     
@@ -95,10 +96,12 @@ function EditUnit() {
             unitContext.UpdateUnit(data)
                 // Handle the response from the API
                 console.log('Success:', data);
+                setSuccessMessage('Data updated successfully!');
             })
             .catch(error => {
                 // Handle errors
                 console.error('Error:', error);
+                setSuccessMessage('Error updating data. Please try again.');
             });
     };
 
@@ -184,6 +187,7 @@ function EditUnit() {
               Update
             </button>
           </form>
+          {successMessage && <p>{successMessage}</p>}
         </div>
       );
     }

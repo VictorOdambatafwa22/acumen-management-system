@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../App.css';
-import NavBar from '../Components/NavBar';
+import Home from '../Components/Home';
 
-function UnitType() {
+function ResetPass() {
   const [formData, setFormData] = useState({
-    unitTypeName: '',
+    email: '',
 
   });
   const [successMessage, setSuccessMessage] = useState(null);
@@ -17,7 +17,7 @@ function UnitType() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    fetch('http://127.0.0.1:5556/unittypes', {
+    fetch('http://127.0.0.1:5556/user-emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ function UnitType() {
       .then(data => {
         // Handle the response from the API
         console.log('Success:', data);
-        setSuccessMessage('Data submitted successfully!');
+        setSuccessMessage('A link has been sent to your email address,click on the link to reset your password!');
       })
       .catch(error => {
         // Handle errors
@@ -37,22 +37,23 @@ function UnitType() {
         setSuccessMessage('Error submitting data. Please try again.');
       });
   };
+    
 
   return (
     <>
-    {<NavBar />}
+    {<Home />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
-        <h2 className="text-2xl font-semibold mb-4">Add new unit type</h2>
+        <h2 className="text-2xl font-semibold mb-4">key in your email address</h2>
         <div className="mb-4">
-          <label htmlFor="unitTypeName" className="block text-gray-600 text-sm font-medium mb-2">
-            Unit type
+          <label htmlFor="email" className="block text-gray-600 text-sm font-medium mb-2">
+            email
           </label>
           <input
-            type="text"
-            id="unitTypeName"
-            name="unitTypeName"
-            value={formData.unitTypeName}
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
             required
@@ -63,7 +64,7 @@ function UnitType() {
           // type="submit"
           className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-500 focus:outline-none"
         >
-          Submit
+          Send
         </button>
       </form>
       {successMessage && <p>{successMessage}</p>}
@@ -72,4 +73,4 @@ function UnitType() {
   );
 }
 
-export default UnitType;
+export default ResetPass;

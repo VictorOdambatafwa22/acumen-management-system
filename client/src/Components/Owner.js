@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
+import NavBar from '../Components/NavBar';
 
 function Owner() {
   const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ function Owner() {
     email: '',
     phoneNumber: '',
   });
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,10 +32,12 @@ function Owner() {
       .then(data => {
         // Handle the response from the API
         console.log('Success:', data);
+        setSuccessMessage('Data submitted successfully!');
       })
       .catch(error => {
         // Handle errors
         console.error('Error:', error);
+        setSuccessMessage('Error submitting data. Please try again.');
       });
   };
     
@@ -41,6 +45,8 @@ function Owner() {
 
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Add new owner</h2>
@@ -107,7 +113,9 @@ function Owner() {
           Submit
         </button>
       </form>
+      {successMessage && <p>{successMessage}</p>}
     </div>
+    </>
   );
 }
 

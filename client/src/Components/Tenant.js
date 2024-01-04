@@ -16,6 +16,7 @@ function Tenant() {
     unit_id: unit?.id,
     arrears:0,
   });
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,10 +40,12 @@ function Tenant() {
       .then(data => {
         // Handle the response from the API
         console.log('Success:', data);
+        setSuccessMessage('Data submitted successfully!');
       })
       .catch(error => {
         // Handle errors
         console.error('Error:', error);
+        setSuccessMessage('Error submitting data. Please try again.');
       });
 
     };
@@ -114,6 +117,7 @@ function Tenant() {
           Submit
         </button>
       </form>
+      {successMessage && <p>{successMessage}</p>}
     </div>
   );
 }

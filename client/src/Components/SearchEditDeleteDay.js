@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { DayContext } from './DayContext';
+import NavBar from '../Components/NavBar';
 
 const SearchEditDeleteDay = () => {
   // const [students, setStudents] = useState([]);
@@ -68,6 +69,8 @@ paymentday.rentDay.toString().includes(searchTerm)
 
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
@@ -121,6 +124,7 @@ paymentday.rentDay.toString().includes(searchTerm)
       </table>
 
     </div>
+    </>
 
   );
 };

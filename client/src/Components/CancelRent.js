@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
 // import { Link } from 'react-router-dom'
 import { PayRentContext } from './PayRentContext';
+import NavBar from '../Components/NavBar';
 
 const CancelRent = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const payrentContext =useContext(PayRentContext)
 //   const { handleDelete } = useContext(TenantContext);
+const [successMessage, setSuccessMessage] = useState(null);
 console.log(payrentContext.payrents)
 
   // const [loading, setLoading] = useState(true);
@@ -56,10 +58,12 @@ console.log(payrentContext.payrents)
             payrentContext.handleDelete(data)
             // Handle the response from the API
             console.log('Success:', data);
+            setSuccessMessage('Data cancelled successfully!');
         })
         .catch(error => {
             // Handle errors
             console.error('Error:', error);
+            setSuccessMessage('Error cancelling data. Please try again.');
         });
 };
 
@@ -75,6 +79,8 @@ console.log(payrentContext.payrents)
   );
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
@@ -132,8 +138,10 @@ console.log(payrentContext.payrents)
           ))}
         </tbody>
       </table>
+      {successMessage && <p>{successMessage}</p>}
 
     </div>
+    </>
 
   );
 };

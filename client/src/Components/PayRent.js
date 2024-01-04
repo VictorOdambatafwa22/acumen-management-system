@@ -17,6 +17,7 @@ function PayRent() {
         entryDate: '',
 
     });
+    const [successMessage, setSuccessMessage] = useState(null);
 
    function findTenant(){
     
@@ -77,10 +78,12 @@ function PayRent() {
             // tenantContext.UpdateTenant(data)
                 // Handle the response from the API
                 console.log('Success:', data);
+                setSuccessMessage('Data submitted successfully!');
             })
             .catch(error => {
                 // Handle errors
                 console.error('Error:', error);
+                setSuccessMessage('Error submitting data. Please try again.');
             });
     };
 
@@ -168,6 +171,7 @@ function PayRent() {
               Submit
             </button>
           </form>
+          {successMessage && <p>{successMessage}</p>}
         </div>
       );
     }

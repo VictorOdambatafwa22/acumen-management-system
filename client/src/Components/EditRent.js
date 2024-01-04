@@ -14,6 +14,7 @@ function EditRent() {
         arrears: '',
 
     });
+    const [successMessage, setSuccessMessage] = useState(null);
 
    function findTenant(){
     
@@ -58,10 +59,12 @@ function EditRent() {
             tenantContext.UpdateTenant(data)
                 // Handle the response from the API
                 console.log('Success:', data);
+                setSuccessMessage('Data updated successfully!');
             })
             .catch(error => {
                 // Handle errors
                 console.error('Error:', error);
+                setSuccessMessage('Error updating data. Please try again.');
             });
     };
 
@@ -120,6 +123,7 @@ function EditRent() {
               Update
             </button>
           </form>
+          {successMessage && <p>{successMessage}</p>}
         </div>
       );
     }

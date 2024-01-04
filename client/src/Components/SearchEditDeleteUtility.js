@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { UtilityContext } from './UtilityContext';
+import NavBar from '../Components/NavBar';
 
 const SearchEditDeleteUtility = () => {
   // const [students, setStudents] = useState([]);
@@ -64,14 +65,17 @@ console.log(utilityContext.utilities)
 
   const filteredUtilities = utilityContext.utilities.filter((utility) =>
     utility.utilityName.toLowerCase().includes(searchTerm.toLowerCase())||
-    utility.costPerUnit.toLowerCase().includes(searchTerm.toLowerCase())
+    utility.costPerUnit.toString().includes(searchTerm)
   );
 
+
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
-        placeholder="Search by name"
+        placeholder="Search by any field..."
         className="mb-4 p-2 border border-gray-300 rounded"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -123,6 +127,7 @@ console.log(utilityContext.utilities)
       </table>
 
     </div>
+    </>
 
   );
 };

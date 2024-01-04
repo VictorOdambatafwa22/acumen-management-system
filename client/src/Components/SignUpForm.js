@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import '../App.css';
 import Home from '../Components/Home';
 
-function Login() {
-  const navigate = useNavigate();
+function SignUpForm() {
   const [formData, setFormData] = useState({
     username: '',
+    email: '',
     password: '',
+    confirmPassword: '',
   });
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -19,30 +19,36 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch('http://127.0.0.1:5556/logins', {
+    // Check if password and confirmPassword match
+    if (formData.password !== formData.confirmPassword) {
+        console.log('Passwords do not match');
+        setSuccessMessage('Passwords do not match!');
+        // You can display an error message or take any appropriate action
+        return;
+      }
+    // Add your form submission logic here
+
+    fetch('http://127.0.0.1:5556/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        // Add any other headers as needed
       },
       body: JSON.stringify(formData),
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Invalid credentials');
-        }
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
+        // Handle the response from the API
         console.log('Success:', data);
         setSuccessMessage('User submitted successfully!');
-        // Redirect to navbar page after successful login
-        navigate('/navbar');
       })
       .catch(error => {
-        console.error('Error:', error.message);
-        setSuccessMessage('Invalid credentials.');
+        // Handle errors
+        console.error('Error:', error);
+        setSuccessMessage('Error submitting user. Please try again.');
       });
   };
+    
 
 
 
@@ -51,7 +57,7 @@ function Login() {
     {<Home />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
-        <h2 className="text-2xl font-semibold mb-4">Login</h2>
+        <h2 className="text-2xl font-semibold mb-4">Add new user</h2>
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700 text-sm font-medium mb-2">
            Username
@@ -66,7 +72,20 @@ function Login() {
             required
           />
         </div>
-
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
+            required
+          />
+        </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 text-sm font-medium mb-2">
             Password
@@ -81,17 +100,20 @@ function Login() {
             required
           />
         </div>
-        <div className="mt-4">
-        <Link to="/signup" className="text-blue-500 hover:underline">
-          Don't have an account? Sign up
-        </Link>
-      </div>
-      <div className="mt-2">
-        <Link to="/reset-pass" className="text-blue-500 hover:underline">
-          Forgot password? Reset it
-        </Link>
-      </div>
-
+        <div className="mb-4">
+          <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-medium mb-2">
+            Confirm password
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-red-500"
+            required
+          />
+        </div>
         <button
           // type="submit"
           className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-500 focus:outline-none"
@@ -105,4 +127,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUpForm;

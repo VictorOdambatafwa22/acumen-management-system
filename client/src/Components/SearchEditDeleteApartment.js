@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { ApartmentContext } from './ApartmentContext';
+import NavBar from '../Components/NavBar';
 
 const SearchEditDeleteApartment = () => {
   // const [students, setStudents] = useState([]);
@@ -71,6 +72,8 @@ console.log(apartmentContext.apartments)
   );
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
@@ -124,6 +127,7 @@ console.log(apartmentContext.apartments)
       </table>
 
     </div>
+    </>
 
   );
 };

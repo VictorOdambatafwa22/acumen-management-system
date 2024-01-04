@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
+import NavBar from '../Components/NavBar';
 
 function AdjustMonthlyRent() {
   const [formData, setFormData] = useState({
@@ -7,10 +8,10 @@ function AdjustMonthlyRent() {
 
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,6 +41,8 @@ function AdjustMonthlyRent() {
     
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Adjust monthly rent</h2>
@@ -66,6 +69,7 @@ function AdjustMonthlyRent() {
         </button>
       </form>
     </div>
+    </>
   );
 }
 

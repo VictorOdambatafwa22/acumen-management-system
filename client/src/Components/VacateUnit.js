@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
 // import { Link } from 'react-router-dom'
 import { TenantContext } from './TenantContext';
+import NavBar from '../Components/NavBar';
 
 const VacateUnit = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const tenantContext =useContext(TenantContext)
 //   const { handleDelete } = useContext(TenantContext);
+const [successMessage, setSuccessMessage] = useState(null);
 console.log(tenantContext.tenants)
 
   // const [loading, setLoading] = useState(true);
@@ -56,10 +58,12 @@ console.log(tenantContext.tenants)
         tenantContext.handleDelete(data)
             // Handle the response from the API
             console.log('Success:', data);
+            setSuccessMessage('Data vacated successfully!');
         })
         .catch(error => {
             // Handle errors
             console.error('Error:', error);
+            setSuccessMessage('Error sending data. Please try again.');
         });
 };
 
@@ -72,19 +76,24 @@ console.log(tenantContext.tenants)
   const filteredTenants = tenantContext.tenants.filter((tenant) =>
   tenant.firstName.toLowerCase().includes(searchTerm.toLowerCase())||
   tenant.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  tenant.email.toLowerCase().includes(searchTerm.toLowerCase())
+  tenant.email.toLowerCase().includes(searchTerm.toLowerCase())||
+  tenant.phoneNumber.toString().includes(searchTerm)
   );
 
+
+
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
-        placeholder="Search by name"
+        placeholder="Search by any field..."
         className="mb-4 p-2 border border-gray-300 rounded"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-
+ 
       <table className="table-auto w-full">
         <thead>
           <tr>
@@ -129,8 +138,11 @@ console.log(tenantContext.tenants)
           ))}
         </tbody>
       </table>
+      {successMessage && <p>{successMessage}</p>}
+
 
     </div>
+    </>
 
   );
 };

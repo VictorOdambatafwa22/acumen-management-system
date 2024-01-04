@@ -10,6 +10,7 @@ import { TenantProvider } from './Components/TenantContext';
 import { DayProvider } from './Components/DayContext';
 import { UtilityProvider } from './Components/UtilityContext';
 import { PayRentProvider } from './Components/PayRentContext';
+import { UserProvider } from './Components/UserContext';
 
 import SearchEditDeleteLocation from './Components/SearchEditDeleteLocation';//table component
 import EditLocation from './Components/EditLocation'; //form component
@@ -46,13 +47,16 @@ import Apartment from './Components/Apartment';
 import EditApartment from './Components/EditApartment'; //form component
 
 import Location from './Components/Location';
-import Login from './Components/Login';
 import OccupyUnit from './Components/OccupyUnit';
 import VacateUnit from './Components/VacateUnit';
 
 import Owner from './Components/Owner';
-// import PayRent from './Components/PayRent';
-import SignUp from './Components/SignUp';
+import Home from './Components/Home';
+import SignUpForm from './Components/SignUpForm';
+import Login from './Components/Login';
+import ResetPassword from './Components/ResetPassword';
+import ResetPass from './Components/ResetPass';
+
 import Unit from './Components/Unit';
 import UnitType from './Components/UnitType';
 import EditUnitType from './Components/EditUnitType'; //form component
@@ -76,16 +80,19 @@ const App = () => {
       <DayProvider>
       <UtilityProvider> 
       <PayRentProvider> 
+      <UserProvider> 
     <div>
-     
 
-     
-      <NavBar />
+
+      {/* <NavBar /> */}
+
     <Routes>
-      {/* <Route path='/' element={ <Home /> } /> */}
-      <Route path='login' element={<Login />} />
-      <Route path='signup' element={<SignUp />} />
-      
+      <Route path="" element={<Home />} />
+      <Route path='/navbar' element={<NavBar />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/signup' element={<SignUpForm />} />
+      <Route path='/reset-password/:id' element={<ResetPassword />} />
+      <Route path='/reset-pass' element={<ResetPass />} />
      
       <Route path='/owner' element={<Owner />} />
       <Route path='/location' element={<Location />} />
@@ -124,6 +131,7 @@ const App = () => {
     </Routes>
     <Footer />
   </div>
+  </UserProvider>
   </PayRentProvider>
   </UtilityProvider>
   </DayProvider>

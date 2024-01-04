@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
+import NavBar from '../Components/NavBar';
 
 function Apartment() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ function Apartment() {
     location_id: '',
     owner_id: '',
   });
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const [students, setStudents] = useState([]);
   const [owners, setOwners] = useState([]);
@@ -68,14 +70,18 @@ function Apartment() {
       .then(data => {
         // Handle the response from the API
         console.log('Success:', data);
+        setSuccessMessage('Data submitted successfully!');
       })
       .catch(error => {
         // Handle errors
         console.error('Error:', error);
+        setSuccessMessage('Error submitting data. Please try again.');
       });
   };
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Add new apartment</h2>
@@ -142,7 +148,9 @@ function Apartment() {
           Submit
         </button>
       </form>
+      {successMessage && <p>{successMessage}</p>}
     </div>
+    </>
   );
 }
 

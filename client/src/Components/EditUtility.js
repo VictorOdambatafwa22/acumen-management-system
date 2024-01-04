@@ -13,6 +13,7 @@ function EditUtility() {
         costPerUnit: ''
 
     });
+    const [successMessage, setSuccessMessage] = useState(null);
 
    function findUtility(){
     
@@ -55,10 +56,12 @@ function EditUtility() {
             utilityContext.UpdateUtility(data)
                 // Handle the response from the API
                 console.log('Success:', data);
+                setSuccessMessage('Data updated successfully!');
             })
             .catch(error => {
                 // Handle errors
                 console.error('Error:', error);
+                setSuccessMessage('Error updating data. Please try again.');
             });
     };
 
@@ -104,6 +107,7 @@ function EditUtility() {
                     Update
                 </button>
             </form>
+            {successMessage && <p>{successMessage}</p>}
         </div>
     );
 }

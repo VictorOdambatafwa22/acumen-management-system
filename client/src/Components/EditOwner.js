@@ -15,6 +15,7 @@ function EditOwner() {
         phoneNumber: '',
 
     });
+    const [successMessage, setSuccessMessage] = useState(null);
 
    function findOwner(){
     
@@ -60,10 +61,12 @@ function EditOwner() {
             ownerContext.UpdateOwner(data)
                 // Handle the response from the API
                 console.log('Success:', data);
+                setSuccessMessage('Data updated successfully!');
             })
             .catch(error => {
                 // Handle errors
                 console.error('Error:', error);
+                setSuccessMessage('Error updating data. Please try again.');
             });
     };
 
@@ -135,6 +138,7 @@ function EditOwner() {
               Update
             </button>
           </form>
+          {successMessage && <p>{successMessage}</p>}
         </div>
       );
     }

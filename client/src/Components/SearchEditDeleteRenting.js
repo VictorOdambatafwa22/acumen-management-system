@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { TenantContext } from './TenantContext';
+import NavBar from '../Components/NavBar';
 
 const SearchEditDeleteRenting = () => {
   // const [students, setStudents] = useState([]);
@@ -44,15 +45,21 @@ console.log(tenantContext.tenants)
   // };
 
   const filteredTenants = tenantContext.tenants.filter((tenant) =>
-  tenant.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+  tenant.firstName.toLowerCase().includes(searchTerm.toLowerCase())||
+  tenant.lastName.toLowerCase().includes(searchTerm.toLowerCase())||
+  tenant.arrears.toString().includes(searchTerm)
 
   );
 
+ 
+
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
-        placeholder="Search by name"
+        placeholder="Search by any field..."
         className="mb-4 p-2 border border-gray-300 rounded"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -102,6 +109,7 @@ console.log(tenantContext.tenants)
       </table>
 
     </div>
+    </>
 
   );
 };

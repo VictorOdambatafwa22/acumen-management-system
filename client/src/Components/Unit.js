@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
+import NavBar from '../Components/NavBar';
 
 function Unit() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ function Unit() {
     rentAmount: '',
     unitStatus: 'Vacant',
   });
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const [apartments, setApartments] = useState([]);
   const [unittypes, setUnitTypes] = useState([]);
@@ -70,14 +72,18 @@ function Unit() {
       .then(data => {
         // Handle the response from the API
         console.log('Success:', data);
+        setSuccessMessage('Data submitted successfully!');
       })
       .catch(error => {
         // Handle errors
         console.error('Error:', error);
+        setSuccessMessage('Error submitting data. Please try again.');
       });
   };
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Add new unit</h2>
@@ -156,7 +162,9 @@ function Unit() {
           Submit
         </button>
       </form>
+      {successMessage && <p>{successMessage}</p>}
     </div>
+    </>
   );
 }
 

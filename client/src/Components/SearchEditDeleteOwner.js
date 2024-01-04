@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { OwnerContext } from './OwnerContext';
+import NavBar from '../Components/NavBar';
 
 const SearchEditDeleteOwner = () => {
   // const [students, setStudents] = useState([]);
@@ -66,14 +67,17 @@ console.log(ownerContext.owners)
   const filteredOwners = ownerContext.owners.filter((owner) =>
     owner.firstName.toLowerCase().includes(searchTerm.toLowerCase())||
     owner.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    owner.email.toLowerCase().includes(searchTerm.toLowerCase())
+    owner.email.toLowerCase().includes(searchTerm.toLowerCase())||
+    owner.phoneNumber.toString().includes(searchTerm)
   );
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
-        placeholder="Search by name"
+        placeholder="Search by any field..."
         className="mb-4 p-2 border border-gray-300 rounded"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -125,6 +129,7 @@ console.log(ownerContext.owners)
       </table>
 
     </div>
+    </>
 
   );
 };

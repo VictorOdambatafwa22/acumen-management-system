@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { UnitTypeContext } from './UnitTypeContext';
+import NavBar from '../Components/NavBar';
 
 const SearchEditDeleteUnitType = () => {
   // const [students, setStudents] = useState([]);
@@ -69,6 +70,8 @@ console.log(unittypeContext.locations)
 
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto p-4">
       <input
         type="text"
@@ -119,6 +122,7 @@ console.log(unittypeContext.locations)
       </table>
 
     </div>
+    </>
 
   );
 };

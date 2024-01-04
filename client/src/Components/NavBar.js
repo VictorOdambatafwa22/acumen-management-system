@@ -122,12 +122,20 @@ const NavBar = () => {
             </li>
 
 
-            <li className="hover:bg-red-300 mx-1 px-6 py-2">
+            <li className="hover:bg-red-300 mx-1 px-6 py-2 relative group">
               <a href="m">Reports</a>
+              <ul className='lg:absolute bg-red-300 top-10 left-0  lg:hidden group-hover:block lg:w-56'>
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/adjust-Monthly-Rent'>Rent payment history</a>
+                </li>
+                <li className='my-1 hover:bg-red-400 px-6 py-2'>
+                  <a href='/adjust-Monthly-Rent'>Total rent arrears</a>
+                </li>
+              </ul>
             </li>
 
             <li className="hover:bg-red-300 mx-1 px-6 py-2">
-              <a href="login">Sign out</a>
+              <a href="/login">Sign out</a>
             </li>
 
           </ul>
