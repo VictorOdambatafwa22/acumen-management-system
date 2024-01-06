@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { DayContext } from './DayContext';
+import NavBar from '../Components/NavBar';
 
 function EditDay() {
     const { id } = useParams();
@@ -13,6 +14,8 @@ function EditDay() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
+    // Retrieve token from localStorage
+    const token = localStorage.getItem('jwtToken');
 
    function findDay(){
     
@@ -42,6 +45,7 @@ function EditDay() {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
                 // Add any other headers as needed
             },
             body: JSON.stringify(formData),
@@ -63,6 +67,8 @@ function EditDay() {
 
 
     return (
+        <>
+        {<NavBar />}
         <div className="container mx-auto mt-8">
             <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
                 <h2 className="text-2xl font-semibold mb-4">Update day</h2>
@@ -119,6 +125,7 @@ function EditDay() {
             </form>
             {successMessage && <p>{successMessage}</p>}
         </div>
+        </>
     );
 }
 

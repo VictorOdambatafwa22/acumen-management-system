@@ -8,6 +8,8 @@ function PaymentDay() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
+     // Retrieve token from localStorage
+     const token = localStorage.getItem('jwtToken');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,6 +23,7 @@ function PaymentDay() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
                 // Add any other headers as needed
             },
             body: JSON.stringify(formData),

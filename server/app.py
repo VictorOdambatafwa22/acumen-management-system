@@ -1,12 +1,24 @@
 from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity,get_jwt,JWTManager
+from datetime import datetime, timedelta
 from model import db, User, Owner, Location,Apartment,UnitType,Unit,Tenant,AuditTrail,PaymentDay,Utility,PayRent
 from flask_cors import CORS, cross_origin
+
+from email.message import EmailMessage
+from trial2 import password
+import ssl
+import smtplib
+
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+jwt = JWTManager(app)
+
 
 migrate = Migrate(app, db)
 
@@ -20,34 +32,168 @@ def home():
         jsonify({"msg":"rental houses"}), 200)
 
 
-# @app.route("/users", methods=["GET","POST"])
-# def Users():
-#     if request.method =="GET":
-#         users = [{
-#             "id":user.id,
-#             "name":user.name,
-#             "email":user.email,
-#             "contact":user.contact,
-#         } for user in User.query.all()]
-#         return make_response(jsonify({"Users": users}), 200)
+@app.route("/users", methods=["GET", "POST"])
+def Users():
+    if request.method == "GET":
+        users = [{
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+        } for user in User.query.all()]
+        return make_response(jsonify({"Users": users}), 200)
 
-#     elif request.method =="POST":        
-#             data = request.get_json()
-#             hp = User(
-#                 name=data["name"],
-#                 email=data["email"],
-#                 contact=data["contact"],
-#                 password=data["password"]   
-#             )
-#             db.session.add(hp)
-#             db.session.commit()    
+    elif request.method == "POST":
+        data = request.get_json()
+        hashed_password = generate_password_hash(data["password"], method='scrypt')
+        # hashed_password = generate_password_hash(data["password"], method='sha256')
+        
 
-#             return make_response(jsonify(response), 200 )
-#     else: 
-#             return make_response(jsonify({"error": "invalid details"}), 404 )    
-# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+        new_user = User(
+            username=data["username"],
+            email=data["email"],
+            password=hashed_password  # Store the hashed password in the database
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return make_response(jsonify({"message": "User added successfully"}), 200)
+    else:
+        return make_response(jsonify({"error": "invalid details"}), 404)
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
+@app.route("/user-emails", methods=["GET", "POST"])
+def UserEmails():
+    if request.method == "GET":
+        emails = [{"email": user.email} for user in User.query.all()]
+        return make_response(jsonify({"UserEmails": emails}), 200)
+
+    elif request.method == "POST":
+        data = request.get_json()
+        email = data.get("email")  # Use data["email"] if you are sure it will be present
+
+        if email:
+            # Create User instance
+            user = User(email=email)
+
+            # Check if user with the given email already exists
+            existing_user = User.query.filter_by(email=email).first()
+
+            if existing_user:
+
+                # return make_response(jsonify({"error": "User already exists"}), 400)
+
+            # Save the new user to the database
+            # db.session.add(user)
+            # db.session.commit()
+
+            # Send email
+                email_sender = 'omondivictor120@gmail.com'
+                email_password = password  # Replace with your actual password
+                print(request.headers.get('Host').split(':')[1])
+
+                email_receiver = data.get("email")
+                subject = "Click the link below to reset your password"
+                body = f"""
+                  {request.remote_addr}:3000/reset-password/{existing_user.id}
+                  
+                """
+
+                em = EmailMessage()
+                em['From'] = email_sender
+                em['To'] = email_receiver
+                em['Subject'] = subject
+                em.set_content(body)
+
+                context = ssl.create_default_context()
+
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                    smtp.login(email_sender, email_password)
+                    smtp.sendmail(email_sender, email_receiver, em.as_string())
+
+                return make_response(jsonify({"message": "User added successfully"}), 200)
+            else:
+                return make_response(jsonify({"error": "Invalid details"}), 400)      
+# 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'   
+# Your existing /logins route
+@app.route("/logins", methods=["POST"])
+def logins():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    if username and password:
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+            # Generate JWT token using Flask-JWT-Extended
+            # payload={'id':user.UserID,'username':user.Username,'email':user.Email,'profilePicture':user.ProfilePicture,'bio':user.Bio}
+            token = create_access_token(identity=user.username, expires_delta=timedelta(minutes=30))
+            return make_response(jsonify({"token": token}), 200)
+        else:
+            return make_response(jsonify({"message": "Invalid email or password"}), 401)
+    else:
+        return make_response(jsonify({"message": "Missing email or password"}), 400)
+
+# Example protected route
+@app.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    username = get_jwt_identity()
+    
+    # Add your logic for handling the protected route here
+
+    return make_response(jsonify({"message": f"Hello, {username}! This is a protected route."}), 200)
+     
+# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm         
+@app.route("/user/<int:id>",methods=["GET", "DELETE","PATCH"])
+def update_user(id):
+    if request.method =="GET":
+        user = User.query.filter_by(id=id).first()
+        if user:
+         users = [{
+            "id":user.id,
+            "username":user.username,
+            "email":user.email,
+
+        } for user in User.query.all()]
+        return make_response(jsonify({"Users": users}), 200)
+   
+    elif request.method =="PATCH":
+       
+        user = User.query.get(int(id))
+        
+        if user:            
+            data = request.get_json()
+
+            if 'newPassword' in data:
+                new_password = data['newPassword']
+                hashed_password = generate_password_hash(new_password, method='sha256')
+                user.password = hashed_password 
+
+            db.session.commit()  
+            return make_response(jsonify({"message": "User updated successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "User not found"}), 404 )
+
+
+    elif request.method =="DELETE":
+        user = User.query.filter_by(id=id).first() 
+
+        if user:
+            User.query.filter_by(id=id).delete()
+            db.session.delete(user)
+            db.session.commit()
+
+            return make_response("User successfully deleted", 204 )
+        else:
+            return make_response(jsonify({"error": "User not found"}), 404 )        
+         
+
+# # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/owners", methods=["GET","POST"])
+@jwt_required()
 def Owners():
+    username = get_jwt_identity()
     if request.method =="GET":
         owners = [{
             "id":owner.id,
@@ -74,7 +220,9 @@ def Owners():
             return make_response(jsonify({"error": "invalid details"}), 404 )    
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/owner/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_owner(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         owner = Owner.query.filter_by(id=id).first()
         if owner:
@@ -125,7 +273,9 @@ def update_owner(id):
 
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/locations", methods=["GET","POST"])
+@jwt_required()
 def Locations():
+    username = get_jwt_identity()
     if request.method =="GET":
         locations = [{
             "id":location.id,
@@ -141,13 +291,16 @@ def Locations():
             )
             db.session.add(hp)
             db.session.commit()    
-
+            message = f"Hello, {username}! This is a protected route."
+            return make_response(jsonify({"message": message}), 200)
             return make_response(jsonify({"message": "Location added successfully"}), 200)
     else: 
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/location/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_location(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         location = Location.query.filter_by(id=id).first()
         if location:
@@ -189,7 +342,9 @@ def update_location(id):
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/utilities", methods=["GET","POST"])
+@jwt_required()
 def Utilities():
+    username = get_jwt_identity()
     if request.method =="GET":
         utilities = [{
             "id":utility.id,
@@ -214,7 +369,9 @@ def Utilities():
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/utility/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_utility(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         utility = Utility.query.filter_by(id=id).first()
         if utility:
@@ -260,7 +417,9 @@ def update_utility(id):
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/paymentdays", methods=["GET","POST"])
+@jwt_required()
 def PaymentDays():
+    username = get_jwt_identity()
     if request.method =="GET":
         paymentdays = [{
             "id":paymentday.id,
@@ -282,7 +441,9 @@ def PaymentDays():
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/paymentday/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_paymentday(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         paymentday = PaymentDay.query.filter_by(id=id).first()
         if paymentday:
@@ -324,7 +485,9 @@ def update_paymentday(id):
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/unittypes", methods=["GET","POST"])
+@jwt_required()
 def UnitTypes():
+    username = get_jwt_identity()
     if request.method =="GET":
         unittypes = [{
             "id":unittype.id,
@@ -346,7 +509,9 @@ def UnitTypes():
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/unittype/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_unittype(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         unittype = UnitType.query.filter_by(id=id).first()
         if unittype:
@@ -388,7 +553,9 @@ def update_unittype(id):
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/apartments", methods=["GET","POST"])
+@jwt_required()
 def Apartments():
+    username = get_jwt_identity()
     if request.method =="GET":
         apartments = [{
             "id":apartment.id,
@@ -413,7 +580,9 @@ def Apartments():
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/apartment/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_apartment(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         apartment = Apartment.query.filter_by(id=id).first()
         if apartment:
@@ -460,7 +629,9 @@ def update_apartment(id):
 
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @app.route("/units", methods=["GET","POST"])
+@jwt_required()
 def Units():
+    username = get_jwt_identity()
     if request.method =="GET":
         units = [{
             "id":unit.id,
@@ -490,7 +661,9 @@ def Units():
             return make_response(jsonify({"error": "invalid details"}), 404 )   
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/unit/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_unit(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         unit = Unit.query.filter_by(id=id).first()
         if unit:
@@ -543,7 +716,9 @@ def update_unit(id):
 
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/tenants", methods=["GET","POST"])
+@jwt_required()
 def Tenants():
+    username = get_jwt_identity()
     if request.method =="GET":
         tenants = [{
             "id":tenant.id,
@@ -583,7 +758,9 @@ def Tenants():
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/tenant/<int:id>",methods=["GET", "DELETE","PATCH"])
+@jwt_required()
 def update_tenant(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         tenant = Tenant.query.filter_by(id=id).first()
         if tenant:
@@ -644,7 +821,9 @@ def update_tenant(id):
 # # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/payrents", methods=["GET","POST","PATCH"])
+@jwt_required()
 def PayRents():
+    username = get_jwt_identity()
     if request.method =="GET":
         payrents = [{
             "id":payrent.id,
@@ -678,6 +857,8 @@ def PayRents():
             db.session.add(tenant) 
             db.session.commit()  
 # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm PATCH used to adjust monthly rents
+            return make_response(jsonify({"message": "Tenant updated successfully"}), 200)
+     
 
     elif request.method =="PATCH":
 
@@ -701,7 +882,9 @@ def PayRents():
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 # 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm'
 @app.route("/payrent/<int:id>",methods=["GET", "DELETE"])
+@jwt_required()
 def update_payrent(id):
+    username = get_jwt_identity()
     if request.method =="GET":
         payrent = PayRent.query.filter_by(id=id).first()
         if payrent:

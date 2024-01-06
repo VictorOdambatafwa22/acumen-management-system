@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { UtilityContext } from './UtilityContext';
+import NavBar from '../Components/NavBar';
 
 function EditUtility() {
     const { id } = useParams();
@@ -14,6 +15,8 @@ function EditUtility() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
+    // Retrieve token from localStorage
+    const token = localStorage.getItem('jwtToken');
 
    function findUtility(){
     
@@ -46,6 +49,7 @@ function EditUtility() {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
                 // Add any other headers as needed
             },
             body: JSON.stringify(formData),
@@ -67,6 +71,8 @@ function EditUtility() {
 
 
     return (
+        <>
+        {<NavBar />}
         <div className="container mx-auto mt-8">
             <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
                 <h2 className="text-2xl font-semibold mb-4">Update utility</h2>
@@ -109,6 +115,7 @@ function EditUtility() {
             </form>
             {successMessage && <p>{successMessage}</p>}
         </div>
+        </>
     );
 }
 

@@ -25,7 +25,15 @@ const UtilityProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5556/utilities');
+        const token = localStorage.getItem('jwtToken'); // Replace with your actual token retrieval logic
+       
+        const response = await fetch('http://127.0.0.1:5556/utilities', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            // Add any other headers as needed
+          },
+        });
+      
         const result = await response.json();
         setUtilities(result.Utilities);
         console.log(result)

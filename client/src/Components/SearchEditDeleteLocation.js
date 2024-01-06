@@ -7,11 +7,14 @@ const SearchEditDeleteLocation = () => {
   // const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const locationContext =useContext(LocationContext)
+ 
   // const { handleDelete } = useContext(LocationContext);
 console.log(locationContext.locations)
+    // Retrieve token from localStorage
+    const token = localStorage.getItem('jwtToken');
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
-
+ 
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -45,6 +48,7 @@ console.log(locationContext.locations)
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
             // Add any other headers as needed
         },
         //  body: JSON.stringify(formData),

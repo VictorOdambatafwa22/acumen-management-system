@@ -9,6 +9,9 @@ const SearchEditDeleteUtility = () => {
   const utilityContext =useContext(UtilityContext)
   // const { handleDelete } = useContext(LocationContext);
 console.log(utilityContext.utilities)
+
+// Retrieve token from localStorage
+const token = localStorage.getItem('jwtToken');
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
@@ -45,6 +48,7 @@ console.log(utilityContext.utilities)
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
             // Add any other headers as needed
         },
         //  body: JSON.stringify(formData),

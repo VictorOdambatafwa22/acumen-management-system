@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { ApartmentContext } from './ApartmentContext';
+import NavBar from '../Components/NavBar';
 
 function EditApartment() {
    
@@ -22,6 +23,8 @@ function EditApartment() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
+        // Retrieve token from localStorage
+        const token = localStorage.getItem('jwtToken');
 
    function findApartment(){
     
@@ -40,27 +43,40 @@ function EditApartment() {
 
     // UseEffect logic here
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch('http://127.0.0.1:5556/locations');
-            const result = await response.json();
-            setStudents(result.Locations);
-            console.log(result)
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem('jwtToken'); // Replace 'yourBearerToken' with your actual Bearer token
     
-            const responseO = await fetch('http://127.0.0.1:5556/owners');
-            const resultO = await responseO.json();
-            setOwners(resultO.Owners);
-            console.log(resultO)
+          const response = await fetch('http://127.0.0.1:5556/locations', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json', // You can add other headers if needed
+            },
+          });
     
-          } catch (error) {
-            setError(error);
-          } finally {
-            setLoading(false);
-          }
-        };
+          const result = await response.json();
+          setStudents(result.Locations);
+          console.log(result);
     
-        fetchData();
-      }, []);
+          const responseO = await fetch('http://127.0.0.1:5556/owners', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json', // You can add other headers if needed
+            },
+          });
+    
+          const resultO = await responseO.json();
+          setOwners(resultO.Owners);
+          console.log(resultO);
+        } catch (error) {
+          setError(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      fetchData();
+    }, []);
     
       if (loading) {
         return <p>Loading...</p>;
@@ -85,6 +101,7 @@ function EditApartment() {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
                 // Add any other headers as needed
             },
             body: JSON.stringify(formData),
@@ -106,6 +123,8 @@ function EditApartment() {
 
 
     return (
+      <>
+      {<NavBar />}
         <div className="container mx-auto mt-8">
           <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Update apartment</h2>
@@ -174,6 +193,7 @@ function EditApartment() {
           </form>
           {successMessage && <p>{successMessage}</p>}
         </div>
+        </>
       );
     }
     

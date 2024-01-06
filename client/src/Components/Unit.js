@@ -17,28 +17,43 @@ function Unit() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5556/apartments');
+        const token = localStorage.getItem('jwtToken'); // Replace 'yourBearerToken' with your actual Bearer token
+  
+        const response = await fetch('http://127.0.0.1:5556/apartments', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json', // You can add other headers if needed
+          },
+        });
+  
         const result = await response.json();
         setApartments(result.Apartments);
-        console.log(result)
-
-        const responseO = await fetch('http://127.0.0.1:5556/unittypes');
+        console.log(result);
+  
+        const responseO = await fetch('http://127.0.0.1:5556/unittypes', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json', // You can add other headers if needed
+          },
+        });
+  
         const resultO = await responseO.json();
         setUnitTypes(resultO.UnitTypes);
-        console.log(resultO)
-
+        console.log(resultO);
       } catch (error) {
         setError(error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
+
 
   if (loading) {
     return <p>Loading...</p>;

@@ -1,8 +1,8 @@
 """Create tables owners, pets
 
-Revision ID: 361a4e08c064
+Revision ID: b16d579cd9fb
 Revises: 
-Create Date: 2023-12-28 16:32:28.089932
+Create Date: 2024-01-02 11:16:51.456759
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '361a4e08c064'
+revision = 'b16d579cd9fb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -43,9 +43,8 @@ def upgrade():
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('username', sa.String(), nullable=True),
     sa.Column('email', sa.String(), nullable=True),
-    sa.Column('contact', sa.Integer(), nullable=True),
     sa.Column('password', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )

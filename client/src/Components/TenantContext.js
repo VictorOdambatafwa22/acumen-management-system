@@ -24,7 +24,15 @@ const TenantProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5556/tenants');
+        const token = localStorage.getItem('jwtToken'); // Replace with your actual token retrieval logic
+       
+        const response = await fetch('http://127.0.0.1:5556/tenants', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            // Add any other headers as needed
+          },
+        });
+  
         const result = await response.json();
         setTenants(result.Tenants);
         console.log(result)

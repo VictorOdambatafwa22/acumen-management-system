@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { OwnerContext } from './OwnerContext';
+import NavBar from '../Components/NavBar';
 
 function EditOwner() {
     const { id } = useParams();
@@ -16,6 +17,8 @@ function EditOwner() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
+      // Retrieve token from localStorage
+    const token = localStorage.getItem('jwtToken');
 
    function findOwner(){
     
@@ -51,6 +54,7 @@ function EditOwner() {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
                 // Add any other headers as needed
             },
             body: JSON.stringify(formData),
@@ -72,6 +76,8 @@ function EditOwner() {
 
 
     return (
+      <>
+      {<NavBar />}
         <div className="container mx-auto mt-8">
           <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Update owner</h2>
@@ -140,6 +146,7 @@ function EditOwner() {
           </form>
           {successMessage && <p>{successMessage}</p>}
         </div>
+        </>
       );
     }
     

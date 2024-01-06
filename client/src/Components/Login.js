@@ -26,14 +26,16 @@ function Login() {
       },
       body: JSON.stringify(formData),
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Invalid credentials');
-        }
-        return response.json();
-      })
-      .then(data => {
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+      return response.json();
+    })
+    .then(data => {
         console.log('Success:', data);
+         // Store the token in localStorage
+         localStorage.setItem('jwtToken', data.token);
         setSuccessMessage('User submitted successfully!');
         // Redirect to navbar page after successful login
         navigate('/navbar');

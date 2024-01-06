@@ -30,7 +30,7 @@ const NavBar = () => {
           <ul className="lg:flex">
 
             <li className="hover:bg-red-300 mx-1 px-6 py-2 bg-red-600 text-white">
-              <a href="m">Home</a>
+              <a href="/">Home</a>
             </li>
 
             <li className="hover:bg-red-300 mx-1 px-6 py-2 relative group">

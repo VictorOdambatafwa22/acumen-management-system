@@ -9,6 +9,7 @@ const SearchEditDeleteTenant = () => {
   const tenantContext =useContext(TenantContext)
   // const { handleDelete } = useContext(TenantContext);
 console.log(tenantContext.tenants)
+
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 

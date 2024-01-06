@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { TenantContext } from './TenantContext';
+import NavBar from '../Components/NavBar';
 
 function EditRent() {
     const { id } = useParams();
@@ -15,6 +16,8 @@ function EditRent() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
+    // Retrieve token from localStorage
+    const token = localStorage.getItem('jwtToken');
 
    function findTenant(){
     
@@ -49,6 +52,7 @@ function EditRent() {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
                 // Add any other headers as needed
             },
             body: JSON.stringify(formData),
@@ -70,6 +74,8 @@ function EditRent() {
 
 
     return (
+      <>
+      {<NavBar />}
         <div className="container mx-auto mt-8">
           <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Update rent</h2>
@@ -125,6 +131,7 @@ function EditRent() {
           </form>
           {successMessage && <p>{successMessage}</p>}
         </div>
+        </>
       );
     }
     

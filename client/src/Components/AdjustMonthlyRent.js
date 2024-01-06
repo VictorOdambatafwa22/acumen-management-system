@@ -8,6 +8,8 @@ function AdjustMonthlyRent() {
 
   });
 
+  // Retrieve token from localStorage
+const token = localStorage.getItem('jwtToken');
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
   //   setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -21,6 +23,7 @@ function AdjustMonthlyRent() {
      method: 'PATCH',
      headers: {
          'Content-Type': 'application/json',
+         'Authorization': `Bearer ${token}`,
          // Add any other headers as needed
      },
       body: JSON.stringify({}),

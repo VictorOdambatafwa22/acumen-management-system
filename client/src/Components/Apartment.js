@@ -18,23 +18,36 @@ function Apartment() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5556/locations');
+        const token = localStorage.getItem('jwtToken'); // Replace 'yourBearerToken' with your actual Bearer token
+  
+        const response = await fetch('http://127.0.0.1:5556/locations', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json', // You can add other headers if needed
+          },
+        });
+  
         const result = await response.json();
         setStudents(result.Locations);
-        console.log(result)
-
-        const responseO = await fetch('http://127.0.0.1:5556/owners');
+        console.log(result);
+  
+        const responseO = await fetch('http://127.0.0.1:5556/owners', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json', // You can add other headers if needed
+          },
+        });
+  
         const resultO = await responseO.json();
         setOwners(resultO.Owners);
-        console.log(resultO)
-
+        console.log(resultO);
       } catch (error) {
         setError(error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
 
