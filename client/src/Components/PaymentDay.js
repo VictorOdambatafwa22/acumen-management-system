@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import NavBar from '../Components/NavBar';
 
 function PaymentDay() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         rentDay: '',
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
-     // Retrieve token from localStorage
-     const token = localStorage.getItem('jwtToken');
+
+   useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      // Redirect to the login page if not logged in
+      navigate('/login'); // Adjust the route according to your application
+    }
+  }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,6 +27,9 @@ function PaymentDay() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+            // Check if the user is logged in
+    const token = localStorage.getItem('jwtToken');
         // Add your form submission logic here
         fetch('http://127.0.0.1:5556/paymentdays', {
             method: 'POST',

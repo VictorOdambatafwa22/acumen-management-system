@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react';
+import { Link,useNavigate } from 'react-router-dom'
 import { DayContext } from './DayContext';
 import NavBar from '../Components/NavBar';
 
@@ -9,9 +9,18 @@ const SearchEditDeleteDay = () => {
   const dayContext =useContext(DayContext)
   // const { handleDelete } = useContext(LocationContext);
 console.log(dayContext.paymentdays)
+const navigate = useNavigate();
 
-    // Retrieve token from localStorage
-    const token = localStorage.getItem('jwtToken');
+
+useEffect(() => {
+  // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    // Redirect to the login page if not logged in
+    navigate('/login'); // Adjust the route according to your application
+  }
+}, [navigate]);
+
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
@@ -42,6 +51,9 @@ console.log(dayContext.paymentdays)
 
   const onDeleteClick = (itemId) => {
 
+      // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+  
     // Add your form submission logic here
     fetch(`http://127.0.0.1:5556/paymentday/${itemId}`, {
        

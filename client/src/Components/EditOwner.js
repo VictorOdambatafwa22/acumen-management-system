@@ -1,11 +1,12 @@
 import React, { useState, useEffect ,useContext} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 import '../App.css';
 import { OwnerContext } from './OwnerContext';
 import NavBar from '../Components/NavBar';
 
 function EditOwner() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const ownerContext =useContext(OwnerContext)
     const owner=ownerContext.owners.find(owner=>owner.id===parseInt(id))
     const [formData, setFormData] = useState({
@@ -17,8 +18,15 @@ function EditOwner() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
-      // Retrieve token from localStorage
-    const token = localStorage.getItem('jwtToken');
+
+useEffect(() => {
+  // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    // Redirect to the login page if not logged in
+    navigate('/login'); // Adjust the route according to your application
+  }
+}, [navigate]);
 
    function findOwner(){
     
@@ -48,6 +56,10 @@ function EditOwner() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+          // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+  
         // Add your form submission logic here
         fetch(`http://127.0.0.1:5556/owner/${id}`, {
            

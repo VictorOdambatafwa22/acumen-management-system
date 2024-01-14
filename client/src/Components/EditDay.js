@@ -1,11 +1,12 @@
 import React, { useState, useEffect ,useContext} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import '../App.css';
 import { DayContext } from './DayContext';
 import NavBar from '../Components/NavBar';
 
 function EditDay() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const dayContext =useContext(DayContext)
     const paymentday=dayContext.paymentdays.find(paymentday=>paymentday.id===parseInt(id))
     const [formData, setFormData] = useState({
@@ -14,8 +15,15 @@ function EditDay() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
-    // Retrieve token from localStorage
-    const token = localStorage.getItem('jwtToken');
+
+useEffect(() => {
+  // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    // Redirect to the login page if not logged in
+    navigate('/login'); // Adjust the route according to your application
+  }
+}, [navigate]);
 
    function findDay(){
     
@@ -39,6 +47,10 @@ function EditDay() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+    // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+
         // Add your form submission logic here
         fetch(`http://127.0.0.1:5556/paymentday/${id}`, {
            

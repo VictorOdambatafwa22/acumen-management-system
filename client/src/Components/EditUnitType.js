@@ -1,11 +1,12 @@
 import React, { useState, useEffect ,useContext} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 import '../App.css';
 import { UnitTypeContext } from './UnitTypeContext';
 import NavBar from '../Components/NavBar';
 
 function EditUnitType() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const unittypeContext =useContext(UnitTypeContext)
     const unittype=unittypeContext.unittypes.find(unittype=>unittype.id===parseInt(id))
     const [formData, setFormData] = useState({
@@ -15,8 +16,16 @@ function EditUnitType() {
     });
     const [successMessage, setSuccessMessage] = useState(null);
 
-      // Retrieve token from localStorage
-      const token = localStorage.getItem('jwtToken');
+      
+      useEffect(() => {
+        // Check if the user is logged in
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+          // Redirect to the login page if not logged in
+          navigate('/login'); // Adjust the route according to your application
+        }
+      }, [navigate]);
+
 
    function findUnitType(){
     
@@ -40,6 +49,11 @@ function EditUnitType() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+     // Retrieve token from localStorage
+      const token = localStorage.getItem('jwtToken');
+
+
         // Add your form submission logic here
         fetch(`http://127.0.0.1:5556/unittype/${id}`, {
            

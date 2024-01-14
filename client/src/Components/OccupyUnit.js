@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react';
+import { Link,useNavigate } from 'react-router-dom'
 import { UnitContext } from './UnitContext';
 import NavBar from '../Components/NavBar';
 
@@ -9,9 +9,20 @@ const OccupyUnit = () => {
   const unitContext =useContext(UnitContext)
 //   const { handleDelete } = useContext(UnitContext);
 console.log(unitContext.units)
+const navigate = useNavigate();
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      // Redirect to the login page if not logged in
+      navigate('/login'); // Adjust the route according to your application
+    }
+  }, [navigate]);
+  
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -36,7 +47,6 @@ console.log(unitContext.units)
   if ( unitContext.error) {
     return <p>Error: {unitContext.error.message}</p>;
   }
-
 
 
 //   const onDeleteClick = (itemId) => {

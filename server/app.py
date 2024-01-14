@@ -125,6 +125,7 @@ def logins():
         user = User.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password, password):
+            
             # Generate JWT token using Flask-JWT-Extended
             # payload={'id':user.UserID,'username':user.Username,'email':user.Email,'profilePicture':user.ProfilePicture,'bio':user.Bio}
             token = create_access_token(identity=user.username, expires_delta=timedelta(minutes=30))

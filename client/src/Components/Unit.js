@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import NavBar from '../Components/NavBar';
 
 function Unit() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     unitName: '',
     apartment_id: '',
@@ -11,6 +13,15 @@ function Unit() {
     unitStatus: 'Vacant',
   });
   const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      // Redirect to the login page if not logged in
+      navigate('/login'); // Adjust the route according to your application
+    }
+  }, [navigate]);
 
   const [apartments, setApartments] = useState([]);
   const [unittypes, setUnitTypes] = useState([]);

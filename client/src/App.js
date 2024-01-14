@@ -56,6 +56,7 @@ import SignUpForm from './Components/SignUpForm';
 import Login from './Components/Login';
 import ResetPassword from './Components/ResetPassword';
 import ResetPass from './Components/ResetPass';
+import SignOut from './Components/SignOut';
 
 import Unit from './Components/Unit';
 import UnitType from './Components/UnitType';
@@ -93,6 +94,7 @@ const App = () => {
       <Route path='/signup' element={<SignUpForm />} />
       <Route path='/reset-password/:id' element={<ResetPassword />} />
       <Route path='/reset-pass' element={<ResetPass />} />
+      <Route path='/signout' element={<SignOut />} />
      
       <Route path='/owner' element={<Owner />} />
       <Route path='/location' element={<Location />} />

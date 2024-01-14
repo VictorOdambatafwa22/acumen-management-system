@@ -1,11 +1,12 @@
 import React, { useState, useEffect ,useContext} from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import '../App.css';
 import { TenantContext } from './TenantContext';
 import NavBar from '../Components/NavBar';
 
 function EditTenant() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const tenantContext =useContext(TenantContext)
     const tenant=tenantContext.tenants.find(tenant=>tenant.id===parseInt(id))
     const [formData, setFormData] = useState({
@@ -17,8 +18,17 @@ function EditTenant() {
 
     });
     const [successMessage, setSuccessMessage] = useState(null);
-    // Retrieve token from localStorage
-    const token = localStorage.getItem('jwtToken');
+
+  
+  useEffect(() => {
+  // Check if the user is logged in
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    // Redirect to the login page if not logged in
+    navigate('/login'); // Adjust the route according to your application
+  }
+}, [navigate]);
+
 
    function findTenant(){
     
@@ -48,6 +58,10 @@ function EditTenant() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+    // Retrieve token from localStorage
+  const token = localStorage.getItem('jwtToken');
+
         // Add your form submission logic here
         fetch(`http://127.0.0.1:5556/tenant/${id}`, {
            

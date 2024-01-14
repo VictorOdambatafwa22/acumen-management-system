@@ -1,14 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState ,useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import NavBar from '../Components/NavBar';
 
 function Apartment() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     apartmentName: '',
     location_id: '',
     owner_id: '',
   });
   const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      // Redirect to the login page if not logged in
+      navigate('/login'); // Adjust the route according to your application
+    }
+  }, [navigate]);
 
   const [students, setStudents] = useState([]);
   const [owners, setOwners] = useState([]);

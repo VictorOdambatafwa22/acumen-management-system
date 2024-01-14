@@ -1,15 +1,24 @@
 // Navigation.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 
 const NavBar = () => {
 
   const [ishidden, setIshidden] = useState(true)
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   function toggleMenu() {
     setIshidden(!ishidden)
 
   }
+
+  const handleSignOut = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem('jwtToken');
+    // Redirect to the login page after signing out
+    navigate('/login');
+  };
 
   return (
 
@@ -135,7 +144,7 @@ const NavBar = () => {
             </li>
 
             <li className="hover:bg-red-300 mx-1 px-6 py-2">
-              <a href="/login">Sign out</a>
+            <a href="/login" onClick={handleSignOut}>Sign Out</a>
             </li>
 
           </ul>
