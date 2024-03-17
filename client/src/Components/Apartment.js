@@ -81,11 +81,16 @@ function Apartment() {
     e.preventDefault();
     console.log(formData)
 
+
+        // Check if the user is logged in
+        const token = localStorage.getItem('jwtToken');
     // Add your form submission logic here
+
     fetch('http://127.0.0.1:5556/apartments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
         // Add any other headers as needed
       },
       body: JSON.stringify(formData),

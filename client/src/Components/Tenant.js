@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css';
 import { UnitContext } from './UnitContext';
+import NavBar from '../Components/NavBar';
 
 function Tenant() {
   const { id } = useParams();
@@ -26,12 +27,16 @@ function Tenant() {
  
   const handleSubmit = (e) => {
     e.preventDefault();
+
+         // Check if the user is logged in
+        const token = localStorage.getItem('jwtToken');
     // Add your form submission logic here
 
     fetch('http://127.0.0.1:5556/tenants', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
         // Add any other headers as needed
       },
       body: JSON.stringify(formData),
@@ -51,6 +56,8 @@ function Tenant() {
     };
 
   return (
+    <>
+    {<NavBar />}
     <div className="container mx-auto mt-8">
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Add new tenant</h2>
@@ -119,6 +126,7 @@ function Tenant() {
       </form>
       {successMessage && <p>{successMessage}</p>}
     </div>
+    </>
   );
 }
 

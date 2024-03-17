@@ -63,6 +63,7 @@ useEffect(() => {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
             // Add any other headers as needed
         },
         //  body: JSON.stringify(formData),

@@ -63,6 +63,7 @@ useEffect(() => {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
             // Add any other headers as needed
         },
         //  body: JSON.stringify(formData),
@@ -78,7 +79,7 @@ useEffect(() => {
         .catch(error => {
             // Handle errors
             console.error('Error:', error);
-            setSuccessMessage('Error sending data. Please try again.');
+            //setSuccessMessage('Error sending data. Please try again.');
         });
 };
 
