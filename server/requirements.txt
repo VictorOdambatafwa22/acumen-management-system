@@ -16,7 +16,7 @@ importlib-metadata
 Jinja2
 jwt
 oauthlib
-PyJWT==1.7.1
+PyJWT==2.1.0
 PyJWTY
 SQLAlchemy
 SQLAlchemy-serializer
