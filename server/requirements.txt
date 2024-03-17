@@ -75,8 +75,6 @@ six
 SQLAlchemy
 SQLAlchemy-serializer
 typing_extensions
-ubuntu-advantage-tools
-ubuntu-drivers-common
 ufw
 unattended-upgrades
 urllib3
