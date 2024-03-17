@@ -74,7 +74,6 @@ SecretStorage
 six
 SQLAlchemy
 SQLAlchemy-serializer
-systemd-python
 ttystatus
 typing_extensions
 ubuntu-advantage-tools
