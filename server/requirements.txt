@@ -79,3 +79,4 @@ urllib3
 wadllib
 Werkzeug
 xdg
+pycups
