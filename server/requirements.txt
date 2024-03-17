@@ -79,5 +79,3 @@ urllib3
 wadllib
 Werkzeug
 xdg
-xkit
-zipp
