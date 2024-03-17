@@ -8,7 +8,6 @@ cliapp
 click
 cmdtest
 colorama
-command-not-found
 cryptography
 cupshelpers
 dbus-python
