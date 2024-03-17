@@ -75,12 +75,7 @@ six
 SQLAlchemy
 SQLAlchemy-serializer
 typing_extensions
-ufw
-unattended-upgrades
 urllib3
-usb-creator
-virtualenv
-virtualenv-clone
 wadllib
 Werkzeug
 xdg
