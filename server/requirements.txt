@@ -17,7 +17,6 @@ Jinja2
 jwt
 oauthlib
 PyJWT==2.1.0
-PyJWTY
 SQLAlchemy
 SQLAlchemy-serializer
 typing_extensions
