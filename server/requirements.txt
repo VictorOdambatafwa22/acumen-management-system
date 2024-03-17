@@ -9,7 +9,6 @@ click
 cmdtest
 colorama
 cryptography
-cupshelpers
 dbus-python
 defer
 distlib
