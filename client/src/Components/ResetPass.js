@@ -17,7 +17,7 @@ function ResetPass() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    fetch('http://127.0.0.1:5556/user-emails', {
+    fetch('https://acumen-management-system.onrender.com/user-emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

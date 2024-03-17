@@ -55,7 +55,7 @@ function EditUnitType() {
 
 
         // Add your form submission logic here
-        fetch(`http://127.0.0.1:5556/unittype/${id}`, {
+        fetch(`https://acumen-management-system.onrender.com/unittype/${id}`, {
            
             method: 'PATCH',
             headers: {

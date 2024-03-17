@@ -34,7 +34,7 @@ function Unit() {
       try {
         const token = localStorage.getItem('jwtToken'); // Replace 'yourBearerToken' with your actual Bearer token
   
-        const response = await fetch('http://127.0.0.1:5556/apartments', {
+        const response = await fetch('https://acumen-management-system.onrender.com/apartments', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json', // You can add other headers if needed
@@ -45,7 +45,7 @@ function Unit() {
         setApartments(result.Apartments);
         console.log(result);
   
-        const responseO = await fetch('http://127.0.0.1:5556/unittypes', {
+        const responseO = await fetch('https://acumen-management-system.onrender.com/unittypes', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json', // You can add other headers if needed
@@ -89,7 +89,7 @@ function Unit() {
     const token = localStorage.getItem('jwtToken');
     // Add your form submission logic here
 
-    fetch('http://127.0.0.1:5556/units', {
+    fetch('https://acumen-management-system.onrender.com/units', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

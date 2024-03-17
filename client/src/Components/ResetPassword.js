@@ -49,7 +49,7 @@ const ResetPassword = () => {
         }
         // Add your form submission logic here
 
-        fetch(`http://127.0.0.1:5556/user/${id}`, {
+        fetch(`https://acumen-management-system.onrender.com/user/${id}`, {
 
             method: 'PATCH',
             headers: {

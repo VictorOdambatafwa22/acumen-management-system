@@ -52,7 +52,7 @@ useEffect(() => {
   const token = localStorage.getItem('jwtToken');
 
         // Add your form submission logic here
-        fetch(`http://127.0.0.1:5556/paymentday/${id}`, {
+        fetch(`https://acumen-management-system.onrender.com/paymentday/${id}`, {
            
             method: 'PATCH',
             headers: {

@@ -33,7 +33,7 @@ function Utility() {
         // Check if the user is logged in
         const token = localStorage.getItem('jwtToken');
     // Add your form submission logic here
-    fetch('http://127.0.0.1:5556/utilities', {
+    fetch('https://acumen-management-system.onrender.com/utilities', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

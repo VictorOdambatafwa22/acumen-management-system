@@ -34,7 +34,7 @@ function Owner() {
         const token = localStorage.getItem('jwtToken');
     // Add your form submission logic here
 
-    fetch('http://127.0.0.1:5556/owners', {
+    fetch('https://acumen-management-system.onrender.com/owners', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

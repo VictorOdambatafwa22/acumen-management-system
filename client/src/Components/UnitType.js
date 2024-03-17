@@ -31,7 +31,7 @@ function UnitType() {
        // Check if the user is logged in
        const token = localStorage.getItem('jwtToken');
     // Add your form submission logic here
-    fetch('http://127.0.0.1:5556/unittypes', {
+    fetch('https://acumen-management-system.onrender.com/unittypes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

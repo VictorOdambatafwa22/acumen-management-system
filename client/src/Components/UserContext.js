@@ -24,7 +24,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5556/users');
+        const response = await fetch('https://acumen-management-system.onrender.com/users');
         const result = await response.json();
         setUsers(result.Users);
         console.log(result)

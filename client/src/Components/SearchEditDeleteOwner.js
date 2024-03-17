@@ -56,7 +56,7 @@ useEffect(() => {
       const token = localStorage.getItem('jwtToken');
 
     // Add your form submission logic here
-    fetch(`http://127.0.0.1:5556/owner/${itemId}`, {
+    fetch(`https://acumen-management-system.onrender.com/owner/${itemId}`, {
        
         method: 'DELETE',
         headers: {

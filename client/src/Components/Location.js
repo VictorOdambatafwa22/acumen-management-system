@@ -33,7 +33,7 @@ function Location() {
   const token = localStorage.getItem('jwtToken');
 
     // Add your form submission logic here
-    fetch('http://127.0.0.1:5556/locations', {
+    fetch('https://acumen-management-system.onrender.com/locations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

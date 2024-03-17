@@ -61,7 +61,7 @@ function EditRent() {
   const token = localStorage.getItem('jwtToken');
 
         // Add your form submission logic here
-        fetch(`http://127.0.0.1:5556/tenant/${id}`, {
+        fetch(`https://acumen-management-system.onrender.com/tenant/${id}`, {
            
             method: 'PATCH',
             headers: {

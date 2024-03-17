@@ -27,7 +27,7 @@ const LocationProvider = ({ children }) => {
       try {
         const token = localStorage.getItem('jwtToken'); // Replace with your actual token retrieval logic
   
-        const response = await fetch('http://127.0.0.1:5556/locations', {
+        const response = await fetch('https://acumen-management-system.onrender.com/locations', {
           headers: {
             'Authorization': `Bearer ${token}`,
             // Add any other headers as needed

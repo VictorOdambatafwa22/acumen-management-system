@@ -28,7 +28,7 @@ function SignUpForm() {
       }
     // Add your form submission logic here
 
-    fetch('http://127.0.0.1:5556/users', {
+    fetch('https://acumen-management-system.onrender.com/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

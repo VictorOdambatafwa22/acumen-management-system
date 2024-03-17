@@ -56,7 +56,7 @@ useEffect(() => {
         try {
           const token = localStorage.getItem('jwtToken'); // Replace 'yourBearerToken' with your actual Bearer token
     
-          const response = await fetch('http://127.0.0.1:5556/locations', {
+          const response = await fetch('https://acumen-management-system.onrender.com/locations', {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json', // You can add other headers if needed
@@ -67,7 +67,7 @@ useEffect(() => {
           setStudents(result.Locations);
           console.log(result);
     
-          const responseO = await fetch('http://127.0.0.1:5556/owners', {
+          const responseO = await fetch('https://acumen-management-system.onrender.com/owners', {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json', // You can add other headers if needed
@@ -109,7 +109,7 @@ useEffect(() => {
   const token = localStorage.getItem('jwtToken');
 
         // Add your form submission logic here
-        fetch(`http://127.0.0.1:5556/apartment/${id}`, {
+        fetch(`https://acumen-management-system.onrender.com/apartment/${id}`, {
            
             method: 'PATCH',
             headers: {
