@@ -54,9 +54,7 @@ Pillow
 pipenv
 platformdirs
 protobuf
-ptyprocess
 pycairo
-pycups
 Pygments
 PyJWT
 pymacaroons
@@ -79,4 +77,3 @@ urllib3
 wadllib
 Werkzeug
 xdg
-pycups
