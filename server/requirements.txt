@@ -2,7 +2,6 @@ alembic
 aniso8601
 bcrypt
 blinker
-Brlapi
 certifi
 chardet
 cliapp
