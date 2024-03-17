@@ -34,7 +34,6 @@ jeepney
 Jinja2
 jwt
 keyring
-language-selector
 launchpadlib
 lazr.restfulclient
 lazr.uri
