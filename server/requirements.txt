@@ -58,7 +58,6 @@ ptyprocess
 pycairo
 pycups
 Pygments
-PyGObject
 PyJWT
 pymacaroons
 PyNaCl
