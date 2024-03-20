@@ -93,9 +93,17 @@ def UserEmails():
 
                 email_receiver = data.get("email")
                 subject = "Click the link below to reset your password"
-                body = f"""
-                  {request.remote_addr}:3000/reset-password/{existing_user.id}
+
+                #body = f"""
+                 # {request.remote_addr}:3000/reset-password/{existing_user.id}
                   
+                #"""
+
+                # Inside your email sending code
+                reset_password_url = f"https://acumen-management-system.onrender.com/reset-password/{existing_user.id}"
+                body = f"""
+                  Click the link below to reset your password:
+                  {reset_password_url}
                 """
 
                 em = EmailMessage()
