@@ -33,7 +33,7 @@ function ResetPass() {
       })
       .catch(error => {
         // Handle errors
-        console.error('Error:', error);
+        //console.error('Error:', error);
         setSuccessMessage('Error submitting data. Please try again.');
       });
   };
